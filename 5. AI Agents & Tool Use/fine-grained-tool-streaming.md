@@ -1,0 +1,1 @@
+https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming
