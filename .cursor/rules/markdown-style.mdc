@@ -1,0 +1,42 @@
+---
+description: House style for all markdown notes in this curriculum repo.
+globs: ["**/*.md"]
+alwaysApply: true
+---
+
+# Markdown Style — AI-Engineer Curriculum
+
+This is a curriculum repo of dense architectural notes. Use the existing files in `7. AI System Architecture/` as the style reference.
+
+## Heading levels
+
+- Line 1 of any numbered note is `# X.Y. Title Case`. Match the filename exactly.
+- Top-level sections use `## N. Section Title` (numbered).
+- Subsections use `### N.M Subtitle`.
+- Never skip heading levels.
+
+## Body
+
+- Prefer **markdown pipe tables** when comparing 3+ items along the same axes. Prose comparisons are a smell.
+- Use **code fences with an explicit language** (` ```text` for ASCII diagrams is fine; never use unlabeled triple-backticks).
+- Use **opinionated callouts** as inline blockquotes: `> Why it matters:`, `> Architectural takeaway:`, `> Lesson:`. They mark the takeaway in a sea of description.
+- Use **em-dash `—` (U+2014)**, not double hyphens, when joining clauses or in titles.
+- Cross-link with **relative paths and URL-encoded spaces**: `[7.1. Claude Platform Managed Agent](./7.1.%20Claude%20Platform%20Managed%20Agent.md)`.
+
+## Voice
+
+- Direct. State the claim, then justify.
+- Architectural. Talk about primitives, boundaries, tradeoffs — not features.
+- Vendor-neutral by default. Vendor specifics live in tables or call-outs.
+- No marketing words: "powerful", "seamless", "robust", "industry-leading", "cutting-edge".
+
+## Length
+
+- Substantive notes target **150–250 lines**. If a note grows beyond ~300, split it.
+- One-liner stubs (e.g., `prompt-caching.md`) are placeholders awaiting promotion to numbered notes.
+
+## Forbidden
+
+- Emoji decoration (the 🟢🟡🔴 build-tier convention is the only allowed exception, and only when used semantically as in `7.2`).
+- Fabricated references. Every link in a `## References` section must be a URL you actually visited or one the user provided.
+- Editing files outside the curriculum tree without an explicit instruction.

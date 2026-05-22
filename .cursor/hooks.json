@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/check-references.sh",
+        "matcher": "Write",
+        "timeout": 5,
+        "failClosed": false
+      }
+    ]
+  }
+}

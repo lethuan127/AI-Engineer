@@ -1,0 +1,40 @@
+---
+description: Enforce the trailing References section on numbered curriculum notes.
+globs: ["[0-9]*/[0-9]*.md", "[0-9]*/*[0-9].*.md"]
+alwaysApply: false
+---
+
+# References Section — Required Format
+
+Every substantive numbered note (`X.Y. Title.md`) ends with a `## References` section. When editing such a note, ensure this section exists and follows the exact format below.
+
+## Format
+
+```markdown
+## References
+
+- [Anthropic — Managed Agents Overview](https://platform.claude.com/docs/en/managed-agents/overview)
+- [MCP Specification](https://modelcontextprotocol.io/specification)
+```
+
+Rules:
+
+- Heading is exactly `## References` (plural, capital R, level-2).
+- One bullet per item: `- ` (hyphen + space), then `[Title](URL)`.
+- Title is informative — prefer `Anthropic — Managed Agents Overview` to `Managed Agents Overview`. Use em-dash to attribute the source.
+- **No bare URLs.** Always wrap in `[Title](URL)` form.
+- **No annotations** after the link (no parenthetical descriptions). If commentary is needed, cite the reference inline in the body.
+
+## Validation
+
+When you are about to save edits to a numbered note, verify:
+
+1. The note contains exactly one `## References` heading.
+2. The heading is the last `##` heading in the file (References is the closing section).
+3. Every item under it is a markdown link, not a bare URL.
+
+If any reference URL was added in this turn and you did not actually verify it resolves, remove it. **Fabricated references are forbidden** — see `AGENTS.md` § 4.
+
+## Source-of-truth skill
+
+Detailed validation rules and a step-by-step normalization workflow live in [`.claude/skills/normalize-references/SKILL.md`](mdc:.claude/skills/normalize-references/SKILL.md). Follow that skill when asked to normalize, audit, or repair references.

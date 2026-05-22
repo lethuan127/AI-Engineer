@@ -50,4 +50,8 @@ A progression from software engineering foundations to building production-ready
 7. [AI System Architecture](./7.%20AI%20System%20Architecture/README.md) — putting it all in production
 8. [AI Safety & Ethics](./8.%20AI%20Safety%20%26%20Ethics/README.md) — responsible AI
 9. [Specialization & Tooling](./9.%20Specialization%20%26%20Tooling/README.md) — fine-tuning, AI-assisted coding (Cursor, Claude Code)
+10. [AI Enterprise](./10.%20AI%20Enterprise/README.md) — adoption, integration, organizational concerns
+11. [Harness Engineering](./11.%20Harness%20Engineering/README.md) — configuring coding agents (rules, skills, hooks, MCP) for your repo
+
+This repository's own harness lives in [`AGENTS.md`](./AGENTS.md), [`.cursor/`](./.cursor/), and [`.claude/`](./.claude/). It is documented end-to-end in [11.10. Reference Implementation Tour](./11.%20Harness%20Engineering/11.10.%20Reference%20Implementation%20Tour.md).
 

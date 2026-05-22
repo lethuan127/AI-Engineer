@@ -1,0 +1,37 @@
+---
+description: Suppress emoji decoration in curriculum notes; allow the semantic build-tier convention only.
+globs: ["**/*.md"]
+alwaysApply: true
+---
+
+# No Emoji Decoration
+
+This curriculum's voice is "senior engineer talking to senior engineer". Emoji decoration undercuts that tone and adds visual noise without information.
+
+## Default rule
+
+Do **not** add emojis to:
+
+- Headings.
+- Bullet points.
+- Callouts.
+- Tables.
+- Cross-link labels.
+
+If the user explicitly asks for emoji decoration in a specific note, honor that instruction for that note only — do not generalize.
+
+## Allowed exception — semantic build-tier convention
+
+`7.2. Self-Implemented Agent Harness — Components.md` introduces a tier convention:
+
+- 🟢 **MVP** — smallest thing that works.
+- 🟡 **Production** — needed before real users.
+- 🔴 **Managed-grade** — needed if you're offering this as a platform to others.
+
+These three glyphs may appear in other notes when used with the **same semantics**. Anywhere else they appear, treat them as decoration and remove them.
+
+## Why
+
+- Emojis render inconsistently across terminals, diff tools, and screen readers.
+- They are a tell that the content was generated rather than written. The repo's existing style (see `7.1`, `7.2`) deliberately has none.
+- The 🟢🟡🔴 tier convention is allowed only because it encodes information no plain text replacement captures as compactly.

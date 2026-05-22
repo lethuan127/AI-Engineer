@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schemas.cursor.com/mcp.json",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "description": "Doc lookups for libraries, frameworks, APIs. Pinned at repo level so cloners get the same MCP without per-user setup."
+    }
+  }
+}
