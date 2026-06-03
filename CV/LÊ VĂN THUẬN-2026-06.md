@@ -7,18 +7,19 @@ Ho Chi Minh City, Vietnam · [levanthuan127@gmail.com](mailto:levanthuan127@gmai
 
 ## SUMMARY
 
-Senior AI / Software Engineer with **7+ years** building and scaling production systems — now owning end-to-end agent-platform architecture at Vireox. Pairs deep **AI engineering** (LLM agents, multi-agent orchestration, RAG, MCP, evals, cost/latency optimization) with strong **backend foundations** (microservices, domain-driven design, high-scale data). Thrives on problems at the **intersection of technology and business**, combining multiple techniques into solutions that move both system metrics and business value; progressing toward **AI Solution Architecture**.
+Senior AI / Software Engineer with **7+ years** building and scaling production systems — now owning end-to-end agent-platform architecture at Vireox. Pairs deep **AI engineering** (LLM agents, multi-agent orchestration, RAG, MCP, evals, cost/latency optimization) with strong **backend foundations** (microservices, domain-driven design, high-scale data). Works at the **intersection of technology and business**, progressing toward **AI Solution Architecture**.
 
 ## HIGHLIGHTS
 
 - Own the architecture of an enterprise **AI Agent Platform** across **12 repositories** — agent backend, MCP tool gateway, RAG knowledge base, and React admin UI
-- Ended recurring customer-facing report outages with a background-mode LLM pipeline; cut LLM operational costs **60%** through batch processing and data preprocessing
+- Drove a background-mode LLM report pipeline to **98%** delivery success in production, ending recurring customer-facing outages and cutting LLM operational costs **60%** through batch processing and data preprocessing
 - Scaled logistics platforms to **100k+ daily transactions** at **99.9% uptime**, with **90%** improvements in API latency and report query times
 - Contributed fixes **upstream to the open-source Agno agent framework**; **AWS Certified Solutions Architect – Associate**
 
 ## CORE SKILLS
 
-- **AI / LLM Engineering**: Large Language Models (LLMs) & Generative AI · LLM agents & multi-agent orchestration (Agno, LangChain, Deep-Agents) · Retrieval-Augmented Generation (RAG) & knowledge bases (AWS Bedrock S3 Vectors, vector search, embeddings) · MCP (Model Context Protocol) tool ecosystems & gateways · LLM evals & reliability · prompt engineering & reasoning-loop design · agent memory · cost/latency optimization · LiteLLM · model providers: OpenAI, Anthropic Claude, Google Gemini (AWS Bedrock, Vertex AI)
+- **AI / LLM Engineering**: Large Language Models (LLMs) & Generative AI · LLM agents & multi-agent orchestration (Agno, LangChain, Deep-Agents) · MCP (Model Context Protocol) tool ecosystems & gateways · prompt engineering & reasoning-loop design · agent memory · LLM evals & reliability
+- **RAG & Model Ops**: Retrieval-Augmented Generation (RAG) & knowledge bases (AWS Bedrock S3 Vectors, vector search, embeddings) · cost/latency optimization · LiteLLM · model providers: OpenAI, Anthropic Claude, Google Gemini (AWS Bedrock, Vertex AI)
 - **Backend & Architecture**: Microservices · Domain-Driven Design · event-driven & RESTful API design · Node.js / NestJS · Python / FastAPI · .NET · GraphQL · system design · solution architecture
 - **Data & Streaming**: PostgreSQL · MongoDB · Redis · vector databases · OpenSearch · Kafka · Flink · Databricks · ETL pipelines
 - **Cloud & Platform**: AWS (Solutions Architect – Associate) · Kubernetes · Docker · Temporal · Celery · CI/CD (GitHub Actions, Jenkins)
@@ -32,12 +33,13 @@ Senior AI / Software Engineer with **7+ years** building and scaling production 
 
 End-to-end ownership of the agent and product architecture for an enterprise **AI Agent Platform**, spanning **12 repositories** — a Python agent backend, data pipelines, a TypeScript MCP gateway, and a React admin UI.
 
-- Architected the **LLM report-generation platform** (V2→V5) on OpenAI background mode with per-draft agent isolation, tracing, and Slack alerting — eliminating the recurring **15-minute request-timeout failures** behind weekly customer report outages
+- Architected the **LLM report-generation platform** (V2→V5) on OpenAI background mode with per-draft agent isolation, tracing, and Slack alerting — reaching a **98%** report delivery success rate in production and ending the recurring 15-minute request-timeout failures behind weekly customer report outages
 - Built a **RAG knowledge-base platform** on **AWS Bedrock S3 Vector storage** with structured retrieval over CSV/XLSX, metadata validation, and bulk lifecycle operations — the retrieval backbone for enterprise agents
 - Designed a unified **MCP (Model Context Protocol) tool gateway and catalog** — RFC 9728 per-server OAuth and dynamic discovery via a LiteLLM gateway — and contributed the underlying **MCP lifecycle-lock fix upstream to the open-source Agno framework**
 - Led the **agent-runtime session-store migration from MongoDB → PostgreSQL** with forward/rollback migrations and Semgrep SAST hardening, removing a class of session-loss failures
-- Hardened production reliability — resolved a **100% CPU leak** and MCP connect/close race conditions, and bounded previously-unbounded Bedrock/Vertex request timeouts; led rapid response on urgent customer-facing report incidents
-- Built supporting infrastructure end-to-end: a multi-agent **notification system** (reflection + sampling loops), an **LLM auto-evaluation framework** (migrated Celery → Temporal), OpenTelemetry observability, and the **Next.js/React admin UI**; pioneered **agent-driven team automation** via a Claude Code plugin marketplace + spec-driven-development harness
+- Hardened production reliability — fixed a **100% CPU leak** and MCP connect/close race conditions, bounded unbounded Bedrock/Vertex request timeouts, and led rapid response on urgent customer-facing report incidents
+- Built supporting infrastructure end-to-end: a multi-agent **notification system** (reflection + sampling loops), an **LLM auto-evaluation framework** (migrated Celery → Temporal), OpenTelemetry observability, and the **Next.js/React admin UI**
+- Pioneered **agent-driven team automation** via a Claude Code plugin marketplace and spec-driven-development harness
 
 ### Software Engineer | Rennlabs
 *March 2024 – August 2025*
@@ -76,8 +78,8 @@ Technical anchor for **CQ**, an AI-powered fundraising platform for alternative 
 
 ## EDUCATION & CERTIFICATIONS
 
-- **Coursework toward B.S. Computer Science** — Ho Chi Minh City University of Technology *(2014 – 2019)*
 - **AWS Certified Solutions Architect – Associate**
+- **B.S. Computer Science (coursework)** — Ho Chi Minh City University of Technology *(2014 – 2019)*
 
 ## LANGUAGES
 

@@ -69,6 +69,21 @@ architect trajectory.
   superlative. Don't claim team-lead scope for IC work or vice-versa.
 - **Metrics:** bold the number (`**90%**`, `**100k+**`, `**60%**`). One headline metric
   per bullet; two max.
+- **Punctuation:** one main idea per bullet, one connector max. Follow the table below.
+
+### Punctuation standard
+
+Each character has exactly one job. The cardinal rule: **never put an em dash and a semicolon in the same bullet** — that signals two ideas crammed into one and reads crowded.
+
+| Mark | Job | Use in a bullet | Limit |
+|---|---|---|---|
+| `—` em dash (spaced ` — `) | Attach **one** sharp result or aside to the main phrase | "Led the migration — **zero downtime**" | **≤1 per bullet** |
+| `:` colon | Introduce a **list** or expansion | "Built infra: A, B, and C" | When listing |
+| `;` semicolon | Join **two equal, complete ideas** in one bullet | "Cut costs **60%**; mentored 3 engineers" | Rare — prefer splitting into two bullets |
+| `,` comma | Separate list items / a small pause | "A, B, and C" | Freely |
+
+> Rule of thumb: if a bullet contains BOTH `—` and `;`, OR reads as two sentences, **split it into two bullets** or drop a connector. Em dashes and semicolons are professionally fine and ATS-safe on modern systems — the failure mode is *density*, not the character. Keep spacing consistent: always ` — ` (spaces around the em dash).
+
 
 ## Metric taxonomy (what "impact" means for this candidate)
 
