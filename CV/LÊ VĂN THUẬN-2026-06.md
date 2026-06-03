@@ -1,4 +1,5 @@
 # LÊ VĂN THUẬN
+
 **Senior AI / Software Engineer**
 
 Ho Chi Minh City, Vietnam · [levanthuan127@gmail.com](mailto:levanthuan127@gmail.com) · +84 963 157 336 · [LinkedIn](https://linkedin.com/in/le-thuan-088bb415b) · [GitHub](https://github.com/lethuan127)
@@ -18,7 +19,7 @@ Senior AI / Software Engineer with **7+ years** building and scaling production 
 
 ## CORE SKILLS
 
-- **AI / LLM Engineering**: Large Language Models (LLMs) & Generative AI · LLM agents & multi-agent orchestration (Agno, LangChain, Deep-Agents) · MCP (Model Context Protocol) tool ecosystems & gateways · prompt engineering & reasoning-loop design · agent memory · LLM evals & reliability
+- **AI / LLM Engineering**: Large Language Models (LLMs) & Generative AI · LLM agents & multi-agent orchestration (Agno, LangChain, Deep-Agents) · MCP (Model Context Protocol) tool ecosystems & gateways · prompt engineering & context engineering · agent memory · LLM evals & reliability
 - **RAG & Model Ops**: Retrieval-Augmented Generation (RAG) & knowledge bases (AWS Bedrock S3 Vectors, vector search, embeddings) · cost/latency optimization · LiteLLM · model providers: OpenAI, Anthropic Claude, Google Gemini (AWS Bedrock, Vertex AI)
 - **Backend & Architecture**: Microservices · Domain-Driven Design · event-driven & RESTful API design · Node.js / NestJS · Python / FastAPI · .NET · GraphQL · system design · solution architecture
 - **Data & Streaming**: PostgreSQL · MongoDB · Redis · vector databases · OpenSearch · Kafka · Flink · Databricks · ETL pipelines
@@ -29,11 +30,12 @@ Senior AI / Software Engineer with **7+ years** building and scaling production 
 ## EXPERIENCE
 
 ### Senior AI Engineer | Vireox
+
 *October 2025 – Present*
 
 End-to-end ownership of the agent and product architecture for an enterprise **AI Agent Platform**, spanning **12 repositories** — a Python agent backend, data pipelines, a TypeScript MCP gateway, and a React admin UI.
 
-- Architected the **LLM report-generation platform** (V2→V5) on OpenAI background mode with per-draft agent isolation, tracing, and Slack alerting — reaching a **98%** report delivery success rate in production and ending the recurring 15-minute request-timeout failures behind weekly customer report outages
+- Architected the **LLM report-generation platform** (V1→V5) on OpenAI background mode with per-draft agent isolation, tracing, and Slack alerting — reaching **98%** delivery success in production, eliminating the 15-minute request-timeout outages behind weekly report failures, and adding **conversation-to-workflow** generation that runs AI workflows on **Mage.ai** to auto-collect insights
 - Built a **RAG knowledge-base platform** on **AWS Bedrock S3 Vector storage** with structured retrieval over CSV/XLSX, metadata validation, and bulk lifecycle operations — the retrieval backbone for enterprise agents
 - Designed a unified **MCP (Model Context Protocol) tool gateway and catalog** — RFC 9728 per-server OAuth and dynamic discovery via a LiteLLM gateway — and contributed the underlying **MCP lifecycle-lock fix upstream to the open-source Agno framework**
 - Led the **agent-runtime session-store migration from MongoDB → PostgreSQL** with forward/rollback migrations and Semgrep SAST hardening, removing a class of session-loss failures
@@ -42,6 +44,7 @@ End-to-end ownership of the agent and product architecture for an enterprise **A
 - Pioneered **agent-driven team automation** via a Claude Code plugin marketplace and spec-driven-development harness
 
 ### Software Engineer | Rennlabs
+
 *March 2024 – August 2025*
 
 Technical anchor for **CQ**, an AI-powered fundraising platform for alternative investments (deal management + investor-data enrichment).
@@ -53,6 +56,7 @@ Technical anchor for **CQ**, an AI-powered fundraising platform for alternative 
 - Standardized engineering workflows (ESLint/Prettier/Husky, git flow), reached **80%** business-layer test coverage, mentored 3+ engineers, and drove AI-powered development org-wide
 
 ### Technical Lead | Smartlog
+
 *December 2021 – March 2024*
 
 - Led a team of **8+ engineers** building the **Smartlog Order Management System (SOM)** — a multi-channel OMS processing **100k+ daily transactions** at **99.9% uptime**
@@ -61,17 +65,20 @@ Technical anchor for **CQ**, an AI-powered fundraising platform for alternative 
 - Implemented Elastic APM observability (**90%** faster debugging) and deployed AWS/Kubernetes infrastructure for high availability; mentored 5+ junior developers
 
 ### Software Engineer | Smartlog
+
 *July 2020 – December 2021*
 
 - Designed backend services for warehouse and order systems processing **50k+ daily operations**; integrated 10+ e-commerce platforms via REST APIs
 - Implemented Redis caching, improving application performance **60%**; mentored 2 interns and conducted code reviews
 
 ### Backend Engineer | Rockship
+
 *April 2019 – July 2020*
 
 - Built backend services (Flask / PostgreSQL) and REST APIs for a flavor-navigation product; deployed and operated AWS infrastructure (EC2, S3, CloudFront)
 
 ### Backend Engineer | Infinity Blockchain Labs
+
 *August 2018 – April 2019*
 
 - Developed and maintained blockchain-based applications; resolved critical bugs and shipped new features with cross-functional teams
@@ -84,3 +91,4 @@ Technical anchor for **CQ**, an AI-powered fundraising platform for alternative 
 ## LANGUAGES
 
 - English (working proficiency) · Vietnamese (native)
+
