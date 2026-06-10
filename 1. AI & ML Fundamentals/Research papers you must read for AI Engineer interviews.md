@@ -1,0 +1,10 @@
+Research papers you must read for AI Engineer interviews:
+1. Attention is all you need (Transformers)
+2. LoRA (Low rank adaption)
+3. PEFT ( Parameter Efficient Fine Tuning)
+4. VIT (Vision Transformers) 5. VAE (Variational Auto Encoder)
+6. GANs ( Generative Adversarial Networks)
+7. BERT ( Bidirectional Encoder Representation from Transformers)
+8. Diffusion Models (Stable Diffusion)
+9. RAG (Retrieval Augment Generation)
+10. GPT (Generative Pre-trained Transformers)
