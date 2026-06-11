@@ -58,7 +58,67 @@ prompt**. More resolution → more patches → more tokens → more cost and lat
 
 ---
 
-## 3. Output side — how the model produces non-text
+## 3. Documents and files — PDF, Office, CSV, …
+
+Files are not a new modality. They are **combinations** of the two modalities
+above (text + images), unpacked before the model sees them.
+
+### PDF — the "dual view" trick
+When you send a PDF to Claude, the system does two things to **every page**:
+
+1. **Renders the page as an image** → goes through the vision path (patches).
+2. **Extracts the text layer** → goes through the text path (tokenizer).
+
+The model gets both, side by side. That is why it can read the words *and*
+understand charts, tables, stamps, signatures, and layout on the same page.
+
+```
+PDF page ──► page image  ──► vision encoder ──► image tokens ─┐
+        └──► text layer  ──► tokenizer      ──► text tokens  ─┴─► model
+```
+
+**Cost:** you pay for both views. Roughly **1,500–3,000 text tokens per page**
+(depends on density) **plus** the image tokens for the rendered page. So a
+3-page PDF ≈ ~7,000 tokens, while plain text extraction of the same pages
+would be ~1,000. The dual view is ~7× more expensive but actually *sees* the
+document.
+
+**Limits (Claude API):** max 32 MB per request, max 600 pages
+(100 pages for 200K-context models), no password-protected PDFs.
+
+**Scanned PDFs:** there is no separate OCR engine. A scan has no text layer,
+so the model reads it purely through the **image** path (vision). This works
+well for clear scans, and badly for blurry or rotated ones — rotate pages
+upright and keep text legible.
+
+**Three ways to send a PDF** (Claude API, `document` content block):
+- `source: {type: "url", url: ...}` — simplest.
+- `source: {type: "base64", media_type: "application/pdf", data: ...}` — local files.
+- `source: {type: "file", file_id: ...}` — upload once via the **Files API**
+  (max 500 MB per file, 100 GB per org), then reference it in many requests.
+  Best for documents you query repeatedly.
+
+**Useful extras:**
+- **Citations** — pass `citations: {enabled: true}` on the document block and
+  the answer carries references back to the exact source passage.
+- **Prompt caching** — put `cache_control` on the document block; repeated
+  questions over the same PDF then cost ~10% of the input price.
+- **Order** — put the PDF *before* your question in the content array.
+
+### Other file types
+| File | How it gets in |
+|---|---|
+| `.txt`, `.md`, `.csv`, `.json`, code | Just text — tokenized directly, no vision cost |
+| `.docx`, `.xlsx`, `.pptx` | Converted/parsed to text (or handled by code-execution / document skills that read and write them programmatically) |
+| Standalone images in docs | Vision path, same as any image |
+| Huge documents (1000s of pages) | Don't stuff into context — chunk + embed + retrieve (RAG, see track 4) |
+
+The mental model: **a "file" is a container.** The platform unpacks it into
+text tokens and/or image tokens; the model itself only ever sees tokens.
+
+---
+
+## 4. Output side — how the model produces non-text
 
 This is the harder part. Three common designs:
 
@@ -92,7 +152,7 @@ This is the harder part. Three common designs:
 
 ---
 
-## 4. Two architecture styles worth knowing
+## 5. Two architecture styles worth knowing
 
 | Style | How | Examples | Trade-off |
 |---|---|---|---|
@@ -104,7 +164,7 @@ are late fusion: you can often train just the projector on a single GPU.
 
 ---
 
-## 5. Practical points for an AI engineer
+## 6. Practical points for an AI engineer
 
 - **Images are input tokens like any other.** They consume context window and
   you pay for them. In the Claude API you pass them as base64 or a URL inside
@@ -128,7 +188,7 @@ are late fusion: you can often train just the projector on a single GPU.
 
 ---
 
-## 6. Quick glossary
+## 7. Quick glossary
 
 | Term | Simple meaning |
 |---|---|
@@ -141,6 +201,8 @@ are late fusion: you can often train just the projector on a single GPU.
 | VQ-VAE / codec | A model that compresses images/audio into a discrete token alphabet, and back |
 | Diffusion model | A separate image generator that denoises random noise into a picture |
 | Early vs late fusion | Trained multimodal from birth vs glued together with an adapter |
+| Text layer | The selectable text stored inside a PDF (scans don't have one) |
+| Files API | Upload a file once, reference it by `file_id` in many requests |
 
 ---
 
@@ -151,4 +213,6 @@ are late fusion: you can often train just the projector on a single GPU.
 - [LLaVA — Visual Instruction Tuning (2023)](https://arxiv.org/abs/2304.08485)
 - [Chameleon — Mixed-Modal Early-Fusion Foundation Models (Meta, 2024)](https://arxiv.org/abs/2405.09818)
 - [Whisper — Robust Speech Recognition via Large-Scale Weak Supervision (OpenAI, 2022)](https://arxiv.org/abs/2212.04356)
-- [Claude API — Vision documentation](https://docs.claude.com/en/docs/build-with-claude/vision)
+- [Claude API — Vision documentation](https://platform.claude.com/docs/en/build-with-claude/vision)
+- [Claude API — PDF support](https://platform.claude.com/docs/en/build-with-claude/pdf-support)
+- [Claude API — Files API](https://platform.claude.com/docs/en/build-with-claude/files)
