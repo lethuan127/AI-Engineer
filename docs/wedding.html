@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ data.name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ data.description }}">
+    <meta name="keywords" content="{{ data.keywords }}">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="application-name" content="iWedding">
+    <meta name="author" content="Biihappy.com">
+    <meta property="og:site_name" content="{{ data.website_info.groom_info.name }} &amp; {{ data.website_info.bride_info.name }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ data.name }}">
+    <meta property="og:url" content="{{ webroot }}">
+    <meta property="og:description" content="{{ data.description }}">
+    <meta property="og:image" content="{{ data.featured_image_url}}">
+    <meta property="og:image:url" content="{{ data.featured_image_url}}">
+    <meta property="og:image:secure_url" content="{{ data.featured_image_url}}">
+    {{ data.favicon | raw }}
+    <link href="https://fonts.googleapis.com/css2?family=Texturina:opsz,wght@12..72,100&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"  rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota+Text&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bonheur+Royale&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ themeRoot }}/css/libs.css" />
+    <link rel="stylesheet" href="{{ themeRoot }}/css/style.css" />
+    <link href="{{ webroot }}/common/calendar.css?v={{ staticVersion }}" rel="stylesheet">
+    <link href="{{ webroot }}/common/toastr/toastr.min.css?v={{ staticVersion }}" rel="stylesheet">
+  </head>
+  <script type="text/javascript">
+    var photoGalleries = [];
+    var dataWishes = [];
+  </script>
+  <body>
+    <div class="wrapper">
+      <header id="header" class="site-header header-style-1 d-none"><meta name="format-detection" content="telephone=no">
+        <nav class="navbar bg-white shadow-sm py-1">
+          <div class="container-fluid">
+            <div class="w-100 d-flex align-items-center justify-content-between">
+              <a class="section-title navbar-brand" href="#">{{ data.text_logo.groom }} & {{ data.text_logo.bride }}</a>
+              <button
+                class="navbar-toggler rounded-0 border-0 p-0"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar"
+              >
+                <i class="bi bi-list fs-3 text-black"></i>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="banner-section">
+        <div class="main_area p-3">
+          <div class="day_wrapper" data-aos="fade-up" data-aos-delay="500">
+            <div class="day_area p-1 text-center">
+              <div class="section-sub-title d-flex day_area_inner text-center p-2 py-3">
+                <p class="m-0 we"> {{ template_data.top_banner_title_1 }}</p>
+                <div class="wrap-text">
+                  <p class="day m-0">{{ data.wedding_date | date('d') }}</p>
+                  <p class="month m-0">{{ data.wedding_date | date('m') }}</p>
+                </div>
+                <p class="m-0">{{ template_data.top_banner_title_2 }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="main_image_area pt-4 pb-8" data-aos="fade-up" data-aos-delay="50">
+            <div class="main_image">
+              <img src="{{ template_data.top_banner_image }}">
+            </div>
+            <img class="bg-title" src="{{ themeRoot }}/img/main_title.png" alt="" />
+            <div class="wrap-name pt-7 px-5 title">
+              {{ data.website_info.groom_info.short_name }} <small>&amp;</small> {{ data.website_info.bride_info.short_name }}
+            </div>
+          </div>
+        </div>
+      </section>
+
+        {% if (data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true) or (data.widget_show_setting.rsvp is not defined or data.widget_show_setting.rsvp == true) or ((data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name)) %}
+        <section class="py-4 accessibilities-section">
+        <div class="container-fluid">
+            <div class="row gx-2 justify-content-center">
+                {% if data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true %}
+                <div class="col-sm-4">
+                    <a href="#wishes" class="w-100 mb-1 px-2 accessibility-btn btn btn-secondary"
+                        data-aos="fade-right">
+                        <span class="content-button">
+                            <img class="access-section-icon" src="{{s3URL}}images/static/common/wishes.png" alt="access-btn">{{ template_data.button_box_wish_title }}
+                        </span>
+                    </a>
+                </div>
+                {% endif %}
+                {% if data.widget_show_setting.rsvp is not defined or data.widget_show_setting.rsvp == true %}
+                <div class="col-sm-4">
+                    <a href="{{ webroot }}/rsvp" target="_blank"
+                        class="w-100 mb-1 px-2 accessibility-btn btn btn-secondary" data-aos="fade-up">
+                        <span class="content-button">
+                            <img class="access-section-icon" src="{{s3URL}}images/static/common/rsvp4.png" alt="access-btn"> {{ template_data.button_box_rsvp_title }}
+                        </span>
+                    </a>
+                </div>
+                {% endif %}
+                {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+                <div class="col-sm-4">
+                    <a href="javascript:void(0)" class="w-100 mb-1 accessibility-btn btn btn-secondary buttonDonate"
+                        data-aos="fade-left">
+                        <span class="content-button">
+                            <img class="access-section-icon" src="{{s3URL}}images/static/common/money_bag.png" alt="access-btn"> {{ template_data.button_box_bank_title }}
+                        </span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        </section>
+        {% endif %}
+
+        {% if template_data.box_banner_video_url %}
+        <section class="py-5 video-section section-bg-affect" id="video">
+            <div class="container-fluid">
+                <h2 class="section-title text-center" data-aos="fade-up">
+                  {{ template_data.box_banner_video_title }} 
+                </h2>
+                <h3 class="section-sub-title mb-4 text-center" data-aos="fade-up">
+                  {{ template_data.box_banner_video_sub_title | nl2br }}
+                </h3> 
+                <div class="ratio ratio-16x9" data-aos="zoom-in">
+                    <iframe width="100%" src="{{ get_embed_url(template_data.box_banner_video_url) }}" title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if data.website_info.galleries and (data.widget_show_setting.galleries is not defined or data.widget_show_setting.galleries == true) %}
+        <section class="py-5 gallery-section section-bg-affect" id="gallery">
+            <div class="container-fluid">
+                <h2 class="section-title text-center" data-aos="zoom-in-up">
+                  {{ template_data.box_photo_album_title }}
+                </h2>
+                <h3 class="section-sub-title mb-4 text-center" data-aos="zoom-in-up">
+                  {{ template_data.box_photo_album_sub_title | nl2br }}
+                </h3>
+                <div class="row gx-2" id="photoGalleryContainer">
+                    {% for index, gallery in data.website_info.galleries %}
+                        <script type="text/javascript">
+                        photoGalleries.push({
+                            src : "{{ s3URL }}{{ gallery.photo_large }}",
+                            thumb: "{{ s3URL }}{{ gallery.photo_small }}",
+                            subHtml: `<div class="lg-sub-html"><h4>{{ gallery.title }}</h4></div>`
+                        });
+                        </script>
+                        {% if index >= 6 and data.website_info.galleries|length > 10 %}
+                            {% set continue = true %}
+                        {% endif %}
+
+                        {% if not continue %}
+                            <div class="col-6 gallery-item section-sub-title mb-2 btn-see-more-gallery" data-aos="{% if ((index+1)%2) == 0 %}fade-left{% else %}fade-right{% endif %}"
+                                data-index="{{ index }}"> <img src="{{ s3URL }}{{ gallery.photo_small }}" />
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if data.website_info.galleries|length > 10 %}
+                <div class="text-center" data-aos="fade-up">
+                    <a href="javascript:void(0)" id="btn-see-more-gallery" class="btn btn-secondary mt-4 btn-see-more-gallery">
+                        <span> Tất cả hình ảnh </span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="py-5 section-sub-title weddingdate-section section-bg-affect" id="weddingdate">
+          <div class="container-fluid">
+              <div class="w-100">
+                  <div class="mini_calendar m-auto pb-3" data-aos="fade-up-right">
+                    {{ generate_calendar(data.wedding_date, 'vn') | raw }}
+                  </div>
+                  <div class="countdown" data-aos="fade-up-left">
+                      <div class="m-auto" id="clock" data-date="{{ data.wedding_date }}" data-text-day="Ngày" data-text-hour="Giờ"
+                          data-text-minute="Phút" data-text-second="Giây"></div>
+                  </div>
+              </div>
+          </div>
+        </section>
+
+        {% if data.website_info.stories and (data.widget_show_setting.stories is not defined or data.widget_show_setting.stories == true) %}
+        <section class="py-5 story-section section-bg-affect" id="story">
+            <div class="container-fluid">
+                <h2 data-aos="fade-up" class="section-title text-center">
+                  {{ template_data.box_love_stories_title }}
+                </h2>
+                <h3 data-aos="fade-up" class="section-sub-title mb-4 text-center">
+                  {{ template_data.box_love_stories_sub_title | nl2br }}
+                </h3>
+                <div class="story-content">
+                    <div class="timeline">
+                        <div class="outer">
+                            {% for index, story in data.website_info.stories %}
+                            <div class="timeline-card" data-aos="{% if ((index+1)%2) == 0 %}fade-left{% else %}fade-right{% endif %}">
+                                <div class="info">
+                                    <span class="date">{{ story.time }}</span>
+                                    <h3 class="title">{{ story.title }}</h3>
+                                    <p>
+                                        {{ story.intro | nl2br }}
+                                    </p>
+                                    <div class="img-holder">
+                                        <img src="{{ s3URL }}{{ story.photo }}" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="py-5 invitation-section section-bg-affect" id="invitation">
+          <div class="container-fluid">
+            <div class="w-100">
+              <div data-aos="fade-up" class="invation-title">
+                <h3 class="text-center title m-0">{{ template_data.box_invitation_title }}</h3>
+                <p class="text-center m-0">
+                  {{ box_invitation_sub_title }}
+                </p>
+              </div>
+              <div>
+                <div data-aos="fade-up" class="invitation-content my-5 text-center sub-title">
+                  {{ template_data.box_invitation_sub_title | nl2br}}
+                </div>
+                <div data-aos="fade-up" class="couple-img mb-5">
+                  <img src="{{ template_data.box_invitation_image }}">
+                </div>
+                <div data-aos="fade-up" class="section-title invitation-couple text-center my-5 fs-4">
+                  <p>*Groom/<span> {{ data.website_info.groom_info.short_name }}</span></p>
+                  <p>*Bride/<span> {{ data.website_info.bride_info.short_name }}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {% if data.website_info.events and (data.widget_show_setting.events is not defined or data.widget_show_setting.events == true) %}
+        <section class="py-5 event-section section-bg-affect" id="event">
+            <div class="container-fluid">
+                <h2 data-aos="fade-up" class="section-title text-center">
+                  {{ template_data.box_events_title }}
+                </h2>
+                <h3 data-aos="fade-up" class="section-sub-title mb-4 text-center">
+                  {{ template_data.box_events_sub_title | nl2br }}
+                </h3>
+                {% for index, event in data.website_info.events %}
+                    {% if event.private != 1 %}
+                    <div data-aos="{% if index%2 != 0 %}flip-left {% else %}flip-right{% endif %}" class="event-item d-flex flex-row p-0 border-0 rounded overflow-hidden">
+                        <div class="image-wrap position-relative" style="background-image: url('{{ s3URL }}{{ event.photo }}');">
+                          {% if event.dresscode_colors and (event.dresscode_colors != []) and (event.dresscode_colors != null) %}
+                          <div class="dresscode-colors-wrap w-100">
+                              <div class="dresscode-colors-event">
+                                  <span class="tooltip-dresscode">Dress Code</span>
+                                  {% for color in event.dresscode_colors %}
+                                  <div class="dresscode-colors-item" style="background:{{ color }};"></div>
+                                  {% endfor %}
+                              </div>
+                          </div>
+                          {% endif %}
+                        </div>
+                        <div class="info-wrap p-3">
+                            <h5 class="section-sub-title">{{ event.name }}</h5>
+                            <strong>{{ event.hour }} {{ event.date | date('d/m/Y') }}</strong>
+                            <p class="card-text">
+                                {% if event.venue_name is defined %}
+                                  <span>{{ event.venue_name }} - </span>
+                                {% endif %}
+                                {{ event.address }}
+                            </p>
+                            <div class="calendar-button" style="display:none;">
+                                <div class="atcb" style="display:none;">
+                                {
+                                  "name":"{{ event.name }} (Đám cưới {{ data.website_info.groom_info.short_name }} và {{ data.website_info.bride_info.short_name }})",
+                                  "description":"Cảm ơn bạn đã dành thời gian tham dự đám cưới của chúng tôi!. Thông tin chi tiết xem tại website:<br>[url]{{ webroot }}[/url]",
+                                  "startDate":"{{ event.date }}",
+                                  "endDate":"{{ event.date }}",
+                                  "startTime":"{{ event.hour }}",
+                                  "endTime":"{{ event.hour }}",
+                                  "location":"{{ event.address }}",
+                                  "options":["Apple","Google","iCal","Microsoft365","MicrosoftTeams","Outlook.com","Yahoo"],
+                                  "timeZone":"Asia/Ho_Chi_Minh",
+                                  "iCalFileName":"Reminder-Event",
+                                  "listStyle":"modal",
+                                  "label":"Thêm vào lịch",
+                                  "trigger":"click"
+                                }
+                                </div>
+                            </div>
+                            <a href="#" data-index="{{ index + 1 }}" class="section-sub-title btn btn-sm btn-secondary calendar-button-custom-click">Thêm vào lịch</a>
+                            <a href="{{ event.map_url ? event.map_url : 'https://www.google.com/maps/place/' ~ event.address|url_encode }}" target="_blank" class="section-sub-title btn btn-sm btn-secondary">Xem bản đồ</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+      <section class="py-5 couple-section section-bg-affect" id="couple">
+        <div class="container-fluid">
+          <h2 data-aos="fade-up" class="section-title text-center m-0">
+            {{ template_data.couple_box_title }}
+          </h2>
+          <!-- <h3 data-aos="fade-up" class="section-sub-title mb-0 text-center">
+            {{ template_data.box_groom_bride_text }}
+          </h3> -->
+          <div class="section-title wrap-people mt-5">
+            <div class="member member-groom mb-5">
+              <div data-aos="flip-left" class="member-image animation mb-3 text-center">
+                <img src="{{ s3URL }}{{ data.website_info.groom_info.avatar }}" />
+              </div>
+              {% if data.website_info.groom_info.father_name or data.website_info.groom_info.mother_name %}
+              <div class="parent d-flex flex-column mx-auto text-center my-2">
+                
+                {% if data.website_info.groom_info.father_name %}
+                <div class="parent-name">{{ template_data.couple_box_father_title }}: <span>{{ data.website_info.groom_info.father_name }}</span></div>
+                {% endif %}
+
+                {% if data.website_info.groom_info.mother_name %}
+                <div class="parent-name">{{ template_data.couple_box_mother_title }}: <span>{{ data.website_info.groom_info.mother_name }}</span></div>
+                {% endif %}
+
+              </div>
+              {% endif %}
+              <div class="groom-story d-flex flex-column">
+                <p class="text-story fs-6 text-center m-0">
+                  {{ data.website_info.groom_info.intro }}
+                </p>
+                <a class="fs-6 fw-bold text-center mb-2 text-decoration-none" tabindex="0" role="button"
+                data-bs-toggle="popover" 
+                data-bs-trigger="focus" 
+                data-bs-placement="bottom" 
+                data-bs-content="{{ data.website_info.groom_info.intro }}">Xem thêm</a>	
+              </div>
+              <div class="d-flex justify-content-center">
+                <span data-aos="fade-left" class="member-name m-0">
+                  {{ data.website_info.groom_info.short_name }} /
+                </span>
+                <ul data-aos="fade-up" class="member-contact social-links d-flex p-0 m-0 mx-2">
+                    {% if data.website_info.groom_info.facebook %}
+                    <li> <a href="{{ data.website_info.groom_info.facebook }}" target="_blank"> <i class="bi bi-facebook"></i> </a> </li>
+                    {% endif %}
+
+                    {% if data.website_info.groom_info.twitter %}
+                    <li> <a href="{{ data.website_info.groom_info.twitter }}" target="_blank"> <i class="bi bi-twitter"></i> </a> </li>
+                    {% endif %}
+
+                    {% if data.website_info.groom_info.instagram %}
+                    <li> <a href="{{ data.website_info.groom_info.instagram }}" target="_blank"> <i class="bi bi-instagram"></i> </a> </li>
+                    {% endif %}
+                </ul>
+              </div>
+            </div>
+            <div class="member member-bride mt-5">
+              <div data-aos="flip-right" class="member-image animation mb-3 text-center">
+                <img src="{{ s3URL }}{{ data.website_info.bride_info.avatar }}"/>
+              </div>
+              {% if data.website_info.bride_info.father_name or data.website_info.bride_info.mother_name %}
+              <div class="parent d-flex flex-column mx-auto text-center my-2">
+
+                  {% if data.website_info.bride_info.father_name %}
+                  <div class="parent-name">{{ template_data.couple_box_father_title }}: <span>{{ data.website_info.bride_info.father_name }}</span></div>
+                  {% endif %}
+
+                  {% if data.website_info.bride_info.mother_name %}
+                  <div class="parent-name">{{ template_data.couple_box_mother_title }}: <span>{{ data.website_info.bride_info.mother_name }}</span></div>
+                  {% endif %}
+              </div>
+              {% endif %}
+
+              <div class="bride-story d-flex flex-column">
+                <p class="text-story fs-6 text-center m-0">
+                  {{ data.website_info.bride_info.intro }}
+                </p>
+                <a class="fs-6 fw-bold text-center mb-2 text-decoration-none" tabindex="0" role="button"
+                data-bs-toggle="popover" 
+                data-bs-trigger="focus" 
+                data-bs-placement="bottom" 
+                data-bs-content="{{ data.website_info.bride_info.intro }}">Xem thêm</a>
+              </div>
+              <div class="d-flex justify-content-center">
+                <span data-aos="fade-left" class="member-name m-0">
+                  {{ data.website_info.bride_info.short_name }} /
+                </span>
+                <ul data-aos="fade-up" class="member-contact social-links d-flex p-0 m-0 mx-2">
+                    {% if data.website_info.bride_info.facebook %}
+                    <li> <a href="{{ data.website_info.bride_info.facebook }}" target="_blank"> <i class="bi bi-facebook"></i> </a> </li>
+                    {% endif %} 
+
+                    {% if data.website_info.bride_info.twitter %}
+                    <li> <a href="{{ data.website_info.bride_info.twitter }}" target="_blank"> <i class="bi bi-twitter"></i> </a> </li>
+                    {% endif %} 
+
+                    {% if data.website_info.bride_info.instagram %}
+                    <li> <a href="{{ data.website_info.bride_info.instagram }}" target="_blank"> <i class="bi bi-instagram"></i> </a> </li>
+                    {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% if data.widget_show_setting.groomsmans_bridesmaids is not defined or data.widget_show_setting.groomsmans_bridesmaids == true %}
+      <section class="py-5 section-sub-title people-section section-bg-affect" id="people">
+          <div class="container-fluid">
+              <h2 data-aos="fade-up" class="section-title text-center">
+                {{ template_data.box_groomsmen_bridesmaid_title }}
+              </h2>
+              <h3 data-aos="fade-up" class="section-sub-title mb-0 text-center">
+                {{ template_data.box_groomsmen_bridesmaid_sub_title | nl2br}}
+              </h3>
+              <div class="row">
+                  {% if data.website_info.bridesmaids %}
+                  <div data-aos="fade-right" class="col-12 col-sm-6">
+                      {% for index, bridesmaid in data.website_info.bridesmaids %}
+                      <div class="w-100 mt-5">
+                          <div class="rounded-circle people-avatar w-75 m-auto mb-3">
+                              <img src="{{ s3URL }}{{ bridesmaid.avatar }}" class="card-img-top" alt="..." />
+                          </div>
+                          <div class="text-center">
+                              <h6 class="section-sub-title title">{{ bridesmaid.name }}</h6>
+                              <p class="people-content">
+                                  {{ bridesmaid.intro | nl2br }}
+                              </p>
+                              <ul class="social-links m-0 p-0">
+                                  {% if bridesmaid.facebook %}
+                                  <li> <a href="{{ bridesmaid.facebook }}" target="_blank"> <i class="bi bi-facebook"></i> </a> </li> 
+                                  {% endif %}
+
+                                  {% if bridesmaid.twitter %}
+                                  <li> <a href="{{ bridesmaid.twitter }}" target="_blank"> <i class="bi bi-twitter"></i> </a> </li> 
+                                  {% endif %}
+
+                                  {% if bridesmaid.instagram %}
+                                  <li> <a href="{{ bridesmaid.instagram }}" target="_blank"> <i class="bi bi-instagram"></i> </a> </li>
+                                  {% endif %}
+                              </ul>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+                  {% endif %}
+
+                  {% if data.website_info.groomsmans %}
+                  <div data-aos="fade-left" class="col-12 col-sm-6">
+                      {% for index, groomsman in data.website_info.groomsmans %}
+                          <div class="w-100 mt-5">
+                              <div class="rounded-circle people-avatar w-75 m-auto mb-3">
+                                  <img src="{{ s3URL }}{{ groomsman.avatar }}" class="card-img-top" alt="..." />
+                              </div>
+                              <div class="text-center">
+                                  <h6 class="section-sub-title title">{{ groomsman.name }}</h6>
+                                  <p class="people-content">
+                                      {{ groomsman.intro | nl2br }}
+                                  </p>
+                                  <ul class="social-links m-0 p-0">
+                                      {% if groomsman.facebook %}
+                                      <li> <a href="{{ groomsman.facebook }}" target="_blank"> <i class="bi bi-facebook"></i> </a> </li>
+                                      {% endif %}
+
+                                      {% if groomsman.twitter %}
+                                      <li> <a href="{{ groomsman.twitter }}" target="_blank"> <i class="bi bi-twitter"></i> </a> </li> 
+                                      {% endif %}
+                                      
+                                      {% if groomsman.instagram %}
+                                      <li> <a href="{{ groomsman.instagram }}" target="_blank"> <i class="bi bi-instagram"></i> </a> </li>
+                                      {% endif %}
+                                  </ul>
+                              </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
+      </section>
+      {% endif %}
+
+      {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+        <section class="py-5 donate-section section-bg-affect" id="donate">
+            <div class="container-fluid ">
+               <div class="w-100">
+                  <h2 data-aos="fade-up" class="section-title text-center m-0">
+                    {{ template_data.bank_box_title }} 
+                  </h2>
+                  <h3 data-aos="fade-up" class="section-sub-title mb-4 text-center">
+                    {{ template_data.bank_box_sub_title | nl2br }} 
+                  </h3>
+                  <div class="row d-flex justify-content-around donate-box mb-1">
+                     {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) %}
+                     <div data-aos="fade-right" class="col-6 mb-4 donate-wrap">
+                        <div class="donate-card p-3 px-3 rounded text-center">
+                           <strong class="d-block sub-title mb-2 text-uppercase">{{ template_data.bank_box_sub_title_1 }}</strong>
+                           {% if data.website_info.groom_info.qr_code %}
+                           <img class="qr-code-image m-auto mb-2" src="{{ s3URL }}{{ data.website_info.groom_info.qr_code }}">
+                           {% endif %}
+                             <p class="mb-1">Ngân hàng: <strong>{{ data.website_info.groom_info.bank_name }}</strong></p>
+                             <p class="mb-1">
+                                Tên tài khoản: <strong>{{ data.website_info.groom_info.bank_account_name }}</strong>
+                             </p>
+                             <p class="mb-1">
+                                Số tài khoản: <strong>{{ data.website_info.groom_info.bank_account_number }}</strong>
+                             </p>
+                             {% if data.website_info.groom_info.bank_branch %}
+                                <p class="mb-1">Chi nhánh: <strong>{{ data.website_info.groom_info.bank_branch }}</strong></p>
+                              {% endif %}
+                           
+                           {% if data.website_info.groom_info.cryptocurrencies %}
+                           <div class="cryptos-box pt-2 border-top">
+                              <h4 class="text-body">Thông tin ví Crypto</h4>
+                              <div class="cryptos-items">
+                                 {% for index, crypto in data.website_info.groom_info.cryptocurrencies %}
+                                 <div class="crypto-item" data-address="{{ crypto.address }}" data-img="{{ crypto.img }}" data-id="{{ crypto.id }}">
+                                    <img src="{{ crypto.img }}"/>
+                                 </div>
+                                 {% endfor %}
+                              </div>
+                           </div>
+                           <div class="cryptos-box-view">
+                              <h5><span class="coin-img"></span> Địa chỉ <span class="coin-id"></span></h5>
+                              <div>
+                                 <span class="coin-address"></span>
+                                 <div class="coin-qr-code"></div>
+                              </div>
+                              <button class="cryptos-box-view-close">Đóng</button>
+                           </div>
+                           {% endif %}
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% if (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+                     <div data-aos="fade-left" class="col-6 donate-wrap">
+                        <div class="donate-card p-3 px-4 rounded text-center">
+                           <strong class="d-block sub-title mb-2 text-uppercase">{{ template_data.bank_box_sub_title_2 }}</strong>
+                           {% if data.website_info.bride_info.qr_code %}
+                           <img class="qr-code-image m-auto mb-2" src="{{ s3URL }}{{ data.website_info.bride_info.qr_code }}">
+                           {% endif %}
+                             <p class="mb-1">Ngân hàng: <strong>{{ data.website_info.bride_info.bank_name }}</strong></p>
+                             <p class="mb-1">
+                                Tên tài khoản: <strong>{{ data.website_info.bride_info.bank_account_name }}</strong>
+                             </p>
+                             <p class="mb-1">
+                                Số tài khoản: <strong>{{ data.website_info.bride_info.bank_account_number }}</strong>
+                             </p>
+                             {% if data.website_info.bride_info.bank_branch %}
+                                <p class="mb-1">Chi nhánh: <strong>{{ data.website_info.bride_info.bank_branch }}</strong></p>
+                             {% endif %}
+                           
+                           {% if data.website_info.bride_info.cryptocurrencies %}
+                           <div class="cryptos-box pt-2 border-top">
+                              <h4 class="text-body">Thông tin ví Crypto</h4>
+                              <div class="cryptos-items">
+                                 {% for index, crypto in data.website_info.bride_info.cryptocurrencies %}
+                                 <div class="crypto-item" data-address="{{ crypto.address }}" data-img="{{ crypto.img }}" data-id="{{ crypto.id }}">
+                                    <img src="{{ crypto.img }}"/>
+                                 </div>
+                                 {% endfor %}
+                              </div>
+                           </div>
+                           <div class="cryptos-box-view">
+                              <h5><span class="coin-img"></span> Địa chỉ ví <span class="coin-id"></span></h5>
+                              <div>
+                                 <span class="coin-address"></span>
+                                 <div class="coin-qr-code"></div>
+                              </div>
+                              <button class="cryptos-box-view-close">Đóng</button>
+                           </div>
+                           {% endif %}
+                        </div>
+                     </div>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+        </section>
+      {% endif %}
+      
+      {% if data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true %}
+      <section class="py-5 wishes-section section-bg-affect" id="wishes">
+        <div class="container-fluid">
+          <h2 data-aos="fade-up" class="section-title text-center">
+            {{ template_data.wish_box_title }}
+          </h2>
+          <h3 data-aos="fade-up" class="section-sub-title mb-4 text-center">
+            {{ template_data.wish_box_sub_title | nl2br }}
+          </h3>
+          <div id="section-comment">
+                  <form action="" id="wish-form" class="p-4 contact-validation-active">
+                    <div class="col-auto mb-3 d-flex">
+                      <div class="w-50 me-2">
+                        <input name="name" id="name-comment" type="text" class="form-control border-0" placeholder="Nhập tên của bạn*"/>
+                      </div>
+                    <div class="w-50 ms-2 ">
+                        <input name="email" id="email-comment" type="text" class="form-control border-0" placeholder="E-mail"/>
+                    </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                      <div class="textarea-emoji-picker position-relative">
+                        <div class="vitualTextarea form-control px-0">
+                          <textarea id="content" name="content" class="form-control border-0" id="detail-comment" rows="3" cols="" placeholder="Nhập lời chúc của bạn*"></textarea>
+                            <div class="textAreaIcons">
+                                <span class="show-autocomplete tooltip-custom" data-toggle="tooltip" data-placement="top" title="Lời chúc gợi ý">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightbulb" viewBox="0 0 16 16">
+                                      <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1"/>
+                                    </svg>
+                                </span>
+                                <span class="hide-autocomplete tooltip-custom" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightbulb-off" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M2.23 4.35A6 6 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a3 3 0 0 0-.676-.941 4.98 4.98 0 0 1-1.455-4.405zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708"/>
+                                    </svg>
+                                </span>
+                                <span class="emoji-picker-button tooltip-custom" data-toggle="tooltip" data-placement="top" title="Chèn biểu tượng">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-emoji-smile" viewBox="0 0 16 16">
+                                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                      <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
+                                    </svg>
+                                </span>
+                                <div class="wishes-autocomplete-content" style="display: none;">
+                                    <input type="text" id="searchWishSuggestions" onkeyup="searchWishSuggestionsFunction()" placeholder="Tìm kiếm...">
+                                    <ul id="wishSuggestions">
+                                        {% for index, item in wishSuggestions %}
+                                        <li><a class="showContent" href="#">{{ item }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="emoji-picker">
+                            <emoji-picker style="max-width: 100%;max-height: 350px;" class="light"></emoji-picker>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-auto text-center">
+                      <button type="submit" class="p-2 w-50 btn btn-danger border-0" id="btn-submit-comment">
+                        Gửi lời chúc
+                      </button>
+                    </div>
+                    <div class="clearfix error-handling-messages">
+                        <div id="success">Thank you</div>
+                        <div id="error"> Error occurred while sending email. Please try again later.</div>
+                    </div>
+                  </form>
+                  <div class="mt-3 px-4 py-3 {% if data.widget_show_setting.wishes_content is defined and data.widget_show_setting.wishes_content == false %} d-none {% endif %}" id="show-comments">
+                    {% for index, wish in data.wishes %}
+                    <div class="box-comment pb-3">
+                      <h4 id="user-name-comment" class="mt-1">{{ wish.name }}</h4>
+                      <p id="comment-detail" class="m-0">
+                        {{ wish.content }}
+                      </p>
+                      <script type="text/javascript">
+                        dataWishes.push({
+                            name: `{{ wish.name }}`,
+                            content: `{{ wish.content }}`
+                        });
+                      </script>
+                      {% if wish.reply %}
+                      <div class="reply-comment-box d-flex align-items-center mt-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-arrow-return-right"
+                          viewBox="0 0 16 16"
+                        >
+                          <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"></path>
+                        </svg>
+                        <img src="{{themeRoot}}/img/avatar-couple.jpg" class="avatar-groom-bride mx-2" alt=""/>
+                        <p class="m-0">{{ wish.reply }}</p>
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+          </div>
+      </section>
+      {% endif %}
+
+      <section class="section-title footer-section py-5 text-center section-bg-affect">
+        <div class="container-fluid">
+          <h3 class="title">{{ template_data.box_banner_footer_title }}</h3>
+          <h5 class="sub-title">--  {{ data.website_info.groom_info.short_name }} &  {{ data.website_info.bride_info.short_name }} --</h5>
+        </div>
+      </section>
+    </div>
+
+    <div class="offcanvas offcanvas-end offcanvas-menu" tabindex="-1" id="offcanvasNavbar" data-bs-scroll="true"
+    data-bs-backdrop="true" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1">
+            <div class="offcanvas-header pb-4 pt-2 px-2 justify-content-end">
+                <button type="button" class="btn-close p-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            {% if template_data.box_banner_video_url %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link active" aria-current="page" href="#video">{{ template_data.menu_box_video_title }}</a>
+            </li>
+            {% endif %}
+
+            {% if data.widget_show_setting.galleries is not defined or data.widget_show_setting.galleries == true %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link active" aria-current="page" href="#gallery">{{ template_data.menu_box_photo_album_title }}</a>
+            </li>
+            {% endif %}
+
+            {% if data.widget_show_setting.stories is not defined or data.widget_show_setting.stories == true %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link active" aria-current="page" href="#story">{{ template_data.menu_box_love_stories_title }}</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="section-sub-title nav-link active" aria-current="page" href="#invitation">{{ template_data.menu_box_invitation_title }}</a>
+            </li>
+
+            {% if data.widget_show_setting.events is not defined or data.widget_show_setting.events == true %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link" href="#event">{{ template_data.menu_box_events_title }}</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="section-sub-title nav-link" href="#couple">{{ template_data.menu_box_couple_title }}</a>
+            </li>
+
+            {% if data.widget_show_setting.groomsmans_bridesmaids is not defined or data.widget_show_setting.groomsmans_bridesmaids == true %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link" href="#people">{{ template_data.menu_box_groomsmen_bridesmaid_title }}</a>
+            </li>
+            {% endif %}
+
+            {% if data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link" href="#wishes">{{ template_data.menu_box_wish_title }}</a>
+            </li>
+            {% endif %}
+
+            {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+            <li class="nav-item">
+                <a class="section-sub-title nav-link" href="#donate">{{ template_data.menu_box_bank_title }}</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    </div>
+
+    {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+    <div class="py-5 donate-section donate-modal section-bg-affect" id="donate-modal">
+      <div class="container-fluid donate-modal-content">
+          <span class="donate-modal-close text-danger">&times;</span>
+          <div class="w-100 p-4">   
+              <h2 data-aos="fade-up" class="section-title text-body text-center m-0">
+                {{ template_data.bank_box_title }}
+              </h2>
+              <h3 data-aos="fade-up" class="section-sub-title text-body mb-4 text-center">
+                {{ template_data.bank_box_sub_title | nl2br }} 
+              </h3>
+              <div class="row justify-content-center donate-box mb-1">
+                  {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) %}
+                  <div data-aos="fade-right" class="col-6 px-4 mb-4">
+                      <div class="donate-card p-4 rounded text-center">
+                          <strong class="d-block sub-title mb-2 text-uppercase">{{ template_data.bank_box_sub_title_1 }}</strong>
+                          {% if data.website_info.groom_info.qr_code %}
+                          <img class="qr-code-image m-auto mb-2" src="{{ s3URL }}{{ data.website_info.groom_info.qr_code }}">
+                          {% endif %}
+                            <p class="mb-1">Ngân hàng: <strong>{{ data.website_info.groom_info.bank_name }}</strong></p>
+                            <p class="mb-1">
+                                Tên tài khoản: <strong>{{ data.website_info.groom_info.bank_account_name }}</strong>
+                            </p>
+                            <p class="mb-1">
+                                Số tài khoản: <strong>{{ data.website_info.groom_info.bank_account_number }}</strong>
+                            </p>
+                            {% if data.website_info.groom_info.bank_branch %}
+                              <p class="mb-1">Chi nhánh: <strong>{{ data.website_info.groom_info.bank_branch }}</strong></p>                               
+                            {% endif %}
+                          {% if data.website_info.groom_info.cryptocurrencies %}
+                    <div class="cryptos-box pt-2 border-top">
+                      <h4 class="text-body">Thông tin ví Crypto</h4>
+                      <div class="cryptos-items">
+                        {% for index, crypto in data.website_info.groom_info.cryptocurrencies %}
+                        <div class="crypto-item" data-address="{{ crypto.address }}" data-img="{{ crypto.img }}" data-id="{{ crypto.id }}">
+                          <img src="{{ crypto.img }}"/>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="cryptos-box-view">
+                      <h5><span class="coin-img"></span> Địa chỉ <span class="coin-id"></span></h5>
+                      <div>
+                        <span class="coin-address"></span>
+                        <div class="coin-qr-code"></div>
+                      </div>
+                      <button class="cryptos-box-view-close">Đóng</button>
+                    </div>
+                    {% endif %}
+                      </div>
+                  </div>
+                  {% endif %}
+                  {% if (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+                  <div data-aos="fade-left" class="col-6 px-4 ">
+                      <div class="donate-card p-4 rounded text-center">
+                          <strong class="d-block sub-title mb-2 text-uppercase">{{ template_data.bank_box_sub_title_2 }}</strong>
+                          {% if data.website_info.bride_info.qr_code %}
+                          <img class="qr-code-image m-auto mb-2" src="{{ s3URL }}{{ data.website_info.bride_info.qr_code }}">
+                          {% endif %}
+                            <p class="mb-1">Ngân hàng: <strong>{{ data.website_info.bride_info.bank_name }}</strong></p>
+                            <p class="mb-1">
+                                Tên tài khoản: <strong>{{ data.website_info.bride_info.bank_account_name }}</strong>
+                            </p>
+                            <p class="mb-1">
+                                Số tài khoản: <strong>{{ data.website_info.bride_info.bank_account_number }}</strong>
+                            </p>
+                            {% if data.website_info.bride_info.bank_branch %}
+                              <p class="mb-1">Chi nhánh: <strong>{{ data.website_info.bride_info.bank_branch }}</strong></p>
+                            {% endif %}
+                          {% if data.website_info.bride_info.cryptocurrencies %}
+                    <div class="cryptos-box pt-2 border-top">
+                      <h4 class="text-body">Thông tin ví Crypto</h4>
+                      <div class="cryptos-items">
+                        {% for index, crypto in data.website_info.bride_info.cryptocurrencies %}
+                        <div class="crypto-item" data-address="{{ crypto.address }}" data-img="{{ crypto.img }}" data-id="{{ crypto.id }}">
+                          <img src="{{ crypto.img }}"/>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="cryptos-box-view">
+                      <h5><span class="coin-img"></span> Địa chỉ ví <span class="coin-id text-body "></span></h5>
+                      <div>
+                        <span class="coin-address"></span>
+                        <div class="coin-qr-code"></div>
+                      </div>
+                      <button class="cryptos-box-view-close">Đóng</button>
+                    </div>
+                    {% endif %}
+                      </div>
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+    </div>
+    {% endif %}
+    
+    {% if (data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true) or (data.widget_show_setting.rsvp is not defined or data.widget_show_setting.rsvp == true) or ((data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name)) %}
+    <div id="menu-access" class="">
+        <div class="btn-menu-open">
+            <i class="bi bi-list text-white"></i>
+        </div>
+        <div class="btn-menu-close">
+            <i class="bi bi-x-lg text-white"></i>
+        </div>
+        <ul class="p-0 m-0 list-menu-icon">
+            {% if data.widget_show_setting.wishes is not defined or data.widget_show_setting.wishes == true %}
+            <li class="text-center">
+                <a href="#wishes" class="text-white">
+                    <span class="content-button tooltipBtn">
+                        <span class="tooltiptext">{{ template_data.button_box_wish_title }}</span>
+                        <img class="access-icon" src="{{s3URL}}images/static/common/wishes.png" alt="">
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if data.widget_show_setting.rsvp is not defined or data.widget_show_setting.rsvp == true %}
+            <li class="text-center">
+                <a href="{{ webroot }}/rsvp" target="_blank" class="text-white">
+                    <span class="content-button tooltipBtn">
+                        <span class="tooltiptext">{{ template_data.button_box_rsvp_title }}</span>
+                        <img class="access-icon" src="{{s3URL}}images/static/common/rsvp4.png" alt="">
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if (data.website_info.groom_info.bank_name and data.website_info.groom_info.bank_account_number and data.website_info.groom_info.bank_account_name) or (data.website_info.bride_info.bank_name and data.website_info.bride_info.bank_account_number and data.website_info.bride_info.bank_account_name) %}
+            <li class="text-center">
+                <a href="#donate" class="text-white">
+                    <span class="content-button tooltipBtn">
+                        <span class="tooltiptext">{{ template_data.button_box_bank_title }}</span>
+                        <img class="access-icon" src="{{s3URL}}images/static/common/money_bag.png" alt="">
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <script type="text/javascript">
+      function sanitizeJsonString(jsonString) {
+            return jsonString
+                .replace(/[\n\r\t]/g, '')
+                .replace(/[\u0000-\u001F]+/g, '')
+                .replace(/,(\s*[}\]])/g, '$1');
+        }
+        function parseJsonRecursively(jsonString) {
+            let sanitizedString = sanitizeJsonString(jsonString);
+            let parsed = JSON.parse(sanitizedString);
+            Object.keys(parsed).forEach(function(key) {
+                try {
+                	let checkValue = JSON.parse(parsed[key]);
+                	if (checkValue && checkValue.constructor === Object) {
+		                parsed[key] = checkValue;
+		            }
+                } catch (e) {
+
+                }
+            });
+            return parsed;
+        }
+      let biicore = parseJsonRecursively('{{ biicore | raw  }}');
+    </script>
+    <script src="{{ webroot }}/common/calendar.js?v={{ staticVersion }}"></script>
+    <script src="{{ webroot }}/common/{{ biiJsUrl }}?v={{ staticVersion }}"></script>
+    <script src="{{ themeRoot }}/js/libs.js"></script>
+    <script src="{{ themeRoot }}/js/script.js"></script>
+    <script src="{{ webroot }}/common/emoji-picker/js/insertTextAtCursor.js?v={{ staticVersion }}"></script>
+    <script type="module" src="{{ webroot }}/common/emoji-picker/js/init.js?v={{ staticVersion }}"></script>
+    <script src="{{ webroot }}/common/toastr/toastr.min.js?v={{ staticVersion }}"></script>
+    <script type="text/javascript">
+      if (typeof  toastMessageWishes === 'function') {
+          toastMessageWishes(dataWishes,'wishes');
+      }
+  </script>
+  </body>
+</html>
