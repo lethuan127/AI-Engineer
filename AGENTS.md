@@ -2,6 +2,8 @@
 
 This file is the **primary instruction file** for any AI coding agent (Cursor, Claude Code, Codex CLI, Copilot CLI, etc.) operating in this repository. It is the agent-facing equivalent of `CONTRIBUTING.md`.
 
+`CLAUDE.md` is a **symlink to this file** — there is one working agreement, not two. Edit `AGENTS.md`; never let the two drift.
+
 If you are a human, this file also tells you what the agents have been told.
 
 ---
@@ -13,6 +15,8 @@ A personal AI Engineering curriculum, structured as numbered top-level folders (
 The dominant artifact is the **architectural note** — a dense, opinionated markdown file (~150–250 lines) that explains a primitive, pattern, or tradeoff. See `7.1. Claude Platform Managed Agent.md` and `7.2. Self-Implemented Agent Harness — Components.md` as the style reference.
 
 This is **not** a code repo. There is no application to run, no test suite, no build. Almost every change is markdown.
+
+The one automated check is **reference validation**: `.claude/hooks/check-references.sh` runs on every `Edit`/`Write` (wired via `.claude/settings.json` PostToolUse and `.cursor/hooks.json`) and warns — never blocks — if a numbered note is missing or malforms its `## References` section. Run it manually with the `/check-refs` slash command (see §5). Scaffold new notes with `/new-note`.
 
 ## 2. House Style for Notes
 
