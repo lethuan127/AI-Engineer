@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coordination Procedure — AI Knowledge System</title>
+<style>
+  :root { --ink:#1a1a1a; --muted:#666; --line:#e4e4e7; --accent:#6b4eff; --bg:#fff; --soft:#faf9f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+  h2 { font-size: 19px; margin: 36px 0 12px; padding-top: 14px; border-top: 1px solid var(--line); }
+  table { width:100%; border-collapse: collapse; margin: 8px 0 4px; font-size: 14.5px; }
+  th, td { text-align:left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  pre { background: var(--soft); border:1px solid var(--line); border-radius:8px; padding:14px; overflow:auto; font-size:13px; line-height:1.5; }
+  .roles { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin:8px 0; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:14px; background:var(--soft); }
+  .card h3 { margin:0 0 6px; font-size:15px; }
+  .card .tool { color:var(--accent); font-weight:600; font-size:13px; }
+  .card p { margin:6px 0 0; font-size:14px; color:var(--ink); }
+  .pill { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:20px; background:#efeaff; color:var(--accent); }
+  ol li, ul li { margin: 4px 0; }
+  .lead { background:var(--soft); border-left:3px solid var(--accent); padding:10px 14px; border-radius:0 8px 8px 0; }
+  @media (max-width:640px){ .roles{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Coordination Procedure — AI Knowledge System</h1>
+  <p class="sub">How <strong>end users</strong>, <strong>domain experts</strong>, and the <strong>AI/IT team</strong> coordinate to build, ship, and use shared AI skills &amp; knowledge.</p>
+
+  <p class="lead"><strong>The shape:</strong> end users surface needs → domain experts build (no technical team in the loop) → AI/IT + CI ship org-wide → everyone benefits automatically. Peer/CI review keeps quality; AI/IT owns only setup, governance, and harder escalations.</p>
+
+  <h2>Roles at a glance</h2>
+  <div class="roles">
+    <div class="card"><h3>End User</h3><span class="tool">Cowork</span><p>Every employee. <em>Uses</em> skills to do daily work; reports gaps. Never authors.</p></div>
+    <div class="card"><h3>Domain Expert</h3><span class="tool">Claude Code (desktop)</span><p>Process owner per function. <em>Authors &amp; fixes</em> skills; owns content correctness.</p></div>
+    <div class="card"><h3>AI / IT Team</h3><span class="tool">full stack</span><p>Platform / enablement. Setup, publishing, governance, connectors, security.</p></div>
+  </div>
+
+  <h2>The core loop</h2>
+<pre>
+End User ──report gap / bug──▶  Intake queue  ──▶  Domain Expert
+                                                     │  author / fix in Claude Code (git via PR)
+                                                     ▼
+                                             Peer review + CI checks
+                                                     │  merge
+                                                     ▼
+                                  AI/IT + CI: publish org plugin (versioned)
+                                                     │  auto-install
+                                                     ▼
+End User ◀── new / updated skill, no action needed ── everyone's Cowork
+</pre>
+
+  <h2>Workflows</h2>
+  <p><span class="pill">A</span> <strong>Use &amp; report (End User)</strong></p>
+  <ol>
+    <li>Run a skill in Cowork to do the work.</li>
+    <li>If a skill is <strong>missing or wrong</strong>, file a request: <em>what you tried</em> + <em>what happened</em>.</li>
+    <li>The request lands in the intake queue. No git, no authoring — just report.</li>
+  </ol>
+  <p><span class="pill">B</span> <strong>Author / adjust a skill (Domain Expert)</strong></p>
+  <ol>
+    <li>Pick up a request from the queue.</li>
+    <li>Author/edit the skill <strong>in Claude Code</strong> — it handles git (commit + PR) for you.</li>
+    <li><strong>Test</strong> it on a real case.</li>
+    <li>Open the PR → <strong>peer review</strong> + <strong>CI checks</strong> (lint/validate).</li>
+    <li>On merge, the plugin re-publishes automatically.</li>
+  </ol>
+  <p><span class="pill">C</span> <strong>Ship to everyone (AI/IT + automation)</strong></p>
+  <ol>
+    <li>CI <strong>packages + version-bumps</strong> the org plugin on merge.</li>
+    <li>The <strong>org plugin auto-installs/updates</strong> for all members.</li>
+    <li>End users get the new/updated skill — <strong>no action</strong>.</li>
+  </ol>
+  <p><span class="pill">D</span> <strong>Setup &amp; govern (AI/IT)</strong></p>
+  <ul>
+    <li><em>One-time:</em> provision the <code>ai-knowledge</code> repo + plugin, set up Claude Code for experts (scoped, git auth, <code>/new-skill</code>), wire connectors, set permissions.</li>
+    <li><em>Ongoing:</em> security review, connector/auth management, breaking-change gate, plugin releases.</li>
+  </ul>
+
+  <h2>Responsibilities (RACI)</h2>
+  <p class="sub" style="margin:0 0 8px">R = does it · A = accountable · C = consulted · I = informed</p>
+  <table>
+    <tr><th>Activity</th><th>End User</th><th>Domain Expert</th><th>AI/IT</th></tr>
+    <tr><td>Use skills daily</td><td><strong>R</strong></td><td>–</td><td>–</td></tr>
+    <tr><td>Report gaps / bugs</td><td><strong>R</strong></td><td>I</td><td>I</td></tr>
+    <tr><td>Author / adjust a skill</td><td>I</td><td><strong>R/A</strong></td><td>C</td></tr>
+    <tr><td>Peer-review a skill</td><td>–</td><td><strong>R</strong></td><td>C</td></tr>
+    <tr><td>Define shared facts (<code>company-definitions</code>)</td><td>C</td><td><strong>R/A</strong></td><td>C</td></tr>
+    <tr><td>Publish the org plugin</td><td>–</td><td>I</td><td><strong>R/A</strong></td></tr>
+    <tr><td>Connectors / auth / security</td><td>–</td><td>I</td><td><strong>R/A</strong></td></tr>
+    <tr><td>Breaking-change approval</td><td>–</td><td>C</td><td><strong>R/A</strong></td></tr>
+  </table>
+
+  <h2>Escalation</h2>
+  <table>
+    <tr><th>Situation</th><th>Goes to</th></tr>
+    <tr><td>Need a new data source (CRM/DB/BI)</td><td><strong>AI/IT</strong> (connectors)</td></tr>
+    <tr><td>Auth / permission / security question</td><td><strong>AI/IT + Security</strong></td></tr>
+    <tr><td>Rename/remove a skill others depend on (breaking)</td><td><strong>AI/IT</strong> (hard gate)</td></tr>
+    <tr><td>A skill keeps failing</td><td><strong>Domain Expert</strong> (content) → <strong>AI/IT</strong> if infra</td></tr>
+  </table>
+
+  <h2>Cadence</h2>
+  <ul>
+    <li><strong>Continuous:</strong> users report; experts pick up.</li>
+    <li><strong>Weekly:</strong> triage the request queue · review &amp; merge PRs · release the plugin.</li>
+    <li><strong>As needed:</strong> AI/IT for connectors and escalations.</li>
+  </ul>
+
+  <h2>One line per role</h2>
+  <ul>
+    <li><strong>End user:</strong> use skills, report gaps. <span class="tool" style="color:var(--accent)">(Cowork)</span></li>
+    <li><strong>Domain expert:</strong> author &amp; fix skills, review peers. <span style="color:var(--accent)">(Claude Code)</span></li>
+    <li><strong>AI/IT:</strong> set up once, publish, govern, connect data. <span style="color:var(--accent)">(full stack)</span></li>
+  </ul>
+
+</div>
+</body>
+</html>

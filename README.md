@@ -41,6 +41,7 @@ References:
 A progression from software engineering foundations to building production-ready AI systems:
 
 0. [Software Engineering](./0.%20Software%20Engineering/README.md) — strong foundation (frontend, backend, database, architecture)
+    - [Problem-Solving Frameworks](./0.2%20Problem-solving%20frameworks/README.md) — decision-making toolkit (Cynefin, first principles, WRAP, ADRs)
 1. [AI & ML Fundamentals](./1.%20AI%20%26%20ML%20Fundamentals/README.md) — conceptual literacy (light)
 2. [LLMs & Foundation Models](./2.%20LLMs%20%26%20Foundation%20Models/README.md) — how they work, capabilities, limits, multimodal
 3. [Prompt & Context Engineering](./3.%20Prompt%20%26%20Context%20Engineering/README.md) — core daily skill
@@ -54,4 +55,7 @@ A progression from software engineering foundations to building production-ready
 11. [Harness Engineering](./11.%20Harness%20Engineering/README.md) — configuring coding agents (rules, skills, hooks, MCP) for your repo
 
 This repository's own harness lives in [`AGENTS.md`](./AGENTS.md), [`.cursor/`](./.cursor/), and [`.claude/`](./.claude/). It is documented end-to-end in [11.10. Reference Implementation Tour](./11.%20Harness%20Engineering/11.10.%20Reference%20Implementation%20Tour.md).
+
+
+https://www.fdehub.org/p/skills-you-need-for-ai-fde-roles
 

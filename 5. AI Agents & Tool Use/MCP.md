@@ -1,0 +1,2 @@
+For large content parameter, consider generate a presign url to pass content by code instead pass directly to mcp content (large output token) - offload strategy
+Other way, use programing tool calling to pass content to mcp function by code instead LLM output
