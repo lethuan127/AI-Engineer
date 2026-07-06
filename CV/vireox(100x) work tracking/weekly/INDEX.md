@@ -1,6 +1,6 @@
 # Weekly Activity Index
 
-Per-week git commits (with descriptions) + Linear tickets across all 100x/Vireox repos. 32 active weeks.
+Per-week git commits (with descriptions) + Linear tickets across all 100x/Vireox repos. 36 active weeks.
 
 | Week of | Commits | Repos | Linear | File |
 |---|---|---|---|---|
@@ -36,4 +36,8 @@ Per-week git commits (with descriptions) + Linear tickets across all 100x/Vireox
 | 18 May 2026 | 21 | 5 | 15 | [week-of-2026-05-18.md](./week-of-2026-05-18.md) |
 | 25 May 2026 | 52 | 6 | 31 | [week-of-2026-05-25.md](./week-of-2026-05-25.md) |
 | 1 June 2026 | 9 | 3 | 6 | [week-of-2026-06-01.md](./week-of-2026-06-01.md) |
+| 8 June 2026 | 76 | 5 | 18 | [week-of-2026-06-08.md](./week-of-2026-06-08.md) |
+| 15 June 2026 | 68 | 3 | 21 | [week-of-2026-06-15.md](./week-of-2026-06-15.md) |
+| 22 June 2026 | 19 | 5 | 16 | [week-of-2026-06-22.md](./week-of-2026-06-22.md) |
+| 29 June 2026 | 60 | 4 | 16 | [week-of-2026-06-29.md](./week-of-2026-06-29.md) |
 

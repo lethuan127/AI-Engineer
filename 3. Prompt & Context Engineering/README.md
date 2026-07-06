@@ -12,3 +12,5 @@ Roadmap: https://roadmap.sh/prompt-engineering
 
 Ref: https://www.promptingguide.ai/
 https://docs.langchain.com/oss/python/concepts/context
+
+https://github.com/asgeirtj/system_prompts_leaks
