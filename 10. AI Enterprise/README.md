@@ -18,6 +18,7 @@ A connected body of work, written at three altitudes. **Pick your entry point by
 
 - [Operational Data for AI — Reach, Understand, Act](Operational%20Data%20for%20AI%20—%20Reach%2C%20Understand%2C%20Act.md) — connecting CRM / SQL / BI via MCP; orient-before-act; gated writes.
 - [Semantic-Layer MCP — Design](Semantic-Layer%20MCP%20—%20Design.md) — the highest-governance way to query business data: structured queries over validated metrics, not raw SQL. Includes a glossary (metric vs measure vs dimension, grain).
+- [Ontology for AI — Three Meanings and the Validation Gate](Ontology%20for%20AI%20—%20Three%20Meanings%20and%20the%20Validation%20Gate.md) — what "ontology" means in 2026 (formal OWL vs SQL-native vs metric layer); the 16%→54%→72% QA evidence; why validation, not generation, is the gate.
 - [System Memory for AI — Capture, Store, Recall, Forget](System%20Memory%20for%20AI%20—%20Capture%2C%20Store%2C%20Recall%2C%20Forget.md) — the agent-authored memory tier; the lifecycle per memory type; sharing & multi-machine/platform; memory poisoning.
 - [Claude Cowork — Sandbox Architecture](Claude%20Cowork%20—%20Sandbox%20Architecture.md) — the execution trust boundary (VM + six isolation mechanisms); the commit-works/push-doesn't gotcha and its fix.
 

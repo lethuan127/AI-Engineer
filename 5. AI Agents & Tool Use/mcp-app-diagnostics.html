@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+  Staged MCP-App diagnostics view — companion artifact to
+  "MCP Apps Debugging — The Staged Diagnostic View and the URI Cache Trap.md".
+
+  Usage: serve from an MCP server as a ui:// resource
+  (mime "text/html;profile=mcp-app", CSP resourceDomains allowlisting esm.sh),
+  declared by a trivial echo tool via meta {"ui": {"resourceUri": ...}}.
+  Stage 7 calls that tool back — rename "test_mcp_app" below to match yours.
+  Register it identically to the real app you're debugging (same SDK version,
+  mime profile, meta keys, CSP), or the diagnosis proves nothing.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>MCP App diagnostics</title>
+<style>
+  :root { --fg: #1a1a1a; --bg: #ffffff; --muted: #6b7280; --ok: #047857; --err: #b91c1c; --border: #d1d5db; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e5e5e5; --bg: #1e1e1e; --muted: #9ca3af; --ok: #34d399; --err: #f87171; --border: #3f3f46; }
+  }
+  body { margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
+         font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  h2 { font: 600 15px system-ui, sans-serif; margin: 0 0 10px; }
+  ul { list-style: none; margin: 0 0 12px; padding: 0; }
+  li { padding: 2px 0; }
+  li.ok::before  { content: "✅ "; }
+  li.err::before { content: "❌ "; }
+  li.wait::before { content: "⏳ "; }
+  li.err { color: var(--err); white-space: pre-wrap; }
+  pre { background: color-mix(in srgb, var(--fg) 6%, var(--bg)); border: 1px solid var(--border);
+        border-radius: 6px; padding: 8px; margin: 4px 0 10px; overflow: auto;
+        max-height: 180px; white-space: pre-wrap; word-break: break-all; }
+  .lbl { color: var(--muted); font: 600 11px system-ui, sans-serif; text-transform: uppercase; }
+  button { font: 600 13px system-ui, sans-serif; padding: 7px 14px; border-radius: 6px;
+           border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <h2>MCP App diagnostics</h2>
+
+  <ul id="stages">
+    <li id="st-html" class="ok">Stage 1 — HTML rendered (the <code>ui://</code> resource loaded in the host iframe)</li>
+    <li id="st-script" class="wait">Stage 2 — module script executing</li>
+    <li id="st-import" class="wait">Stage 3 — SDK import from esm.sh (CSP check)</li>
+    <li id="st-connect" class="wait">Stage 4 — <code>app.connect()</code> handshake with the host</li>
+    <li id="st-toolinput" class="wait">Stage 5 — <code>ontoolinput</code> received</li>
+    <li id="st-toolresult" class="wait">Stage 6 — <code>ontoolresult</code> received</li>
+    <li id="st-roundtrip" class="wait">Stage 7 — <code>callServerTool</code> round-trip (click the button)</li>
+  </ul>
+
+  <div class="lbl">Environment</div>
+  <pre id="env">…</pre>
+
+  <div class="lbl">Host context</div>
+  <pre id="ctx">(waiting for connect)</pre>
+
+  <div class="lbl">Tool input (raw)</div>
+  <pre id="input">(nothing yet)</pre>
+
+  <div class="lbl">Tool result (raw)</div>
+  <pre id="result">(nothing yet)</pre>
+
+  <button id="rt-btn" disabled>Run Stage 7: callServerTool("test_mcp_app")</button>
+  <pre id="rt-out">(not run)</pre>
+
+<script type="module">
+const stage = (id, ok, detail) => {
+  const li = document.getElementById("st-" + id);
+  li.className = ok ? "ok" : "err";
+  if (detail) li.textContent += " — " + detail;
+};
+const show = (id, obj) => {
+  document.getElementById(id).textContent =
+    typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+};
+
+show("env", {
+  url: location.href,
+  origin: (() => { try { return self.origin; } catch { return "(unavailable)"; } })(),
+  framed: window.parent !== window,
+  userAgent: navigator.userAgent.slice(0, 80),
+});
+stage("script", true);
+
+// Match the SDK source + version of the app you're debugging — if this stage
+// fails, that app fails the same way (CSP block, esm.sh outage, host protocol bump).
+let App;
+try {
+  ({ App } = await import(
+    "https://esm.sh/@modelcontextprotocol/ext-apps@0.4.1?deps=zod@3.25.1"
+  ));
+  stage("import", true);
+} catch (err) {
+  stage("import", false, String(err));
+  throw err;
+}
+
+const app = new App({ name: "mcp-app-diagnostics", version: "0.1.0" });
+app.ontoolinput = (params) => {
+  stage("toolinput", true);
+  show("input", params);
+};
+app.ontoolresult = (result) => {
+  stage("toolresult", true);
+  show("result", result);
+};
+
+try {
+  await app.connect();
+  stage("connect", true);
+  show("ctx", app.getHostContext?.() ?? "(getHostContext unavailable)");
+  document.getElementById("rt-btn").disabled = false;
+} catch (err) {
+  stage("connect", false, String(err));
+  throw err;
+}
+
+document.getElementById("rt-btn").addEventListener("click", async () => {
+  show("rt-out", "calling…");
+  try {
+    const result = await app.callServerTool({
+      name: "test_mcp_app",
+      arguments: { message: "round-trip from the app iframe" },
+    });
+    stage("roundtrip", !result.isError);
+    show("rt-out", result);
+  } catch (err) {
+    stage("roundtrip", false, String(err));
+    show("rt-out", String(err));
+  }
+});
+</script>
+</body>
+</html>

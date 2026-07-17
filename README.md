@@ -59,3 +59,6 @@ This repository's own harness lives in [`AGENTS.md`](./AGENTS.md), [`.cursor/`](
 
 https://www.fdehub.org/p/skills-you-need-for-ai-fde-roles
 
+
+
+Agent Reinforcement Trainer (Reinforcement Learning) - Reward Engineering

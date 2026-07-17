@@ -70,8 +70,10 @@ Section 11 walks each box and the edges between them.
 | [11.11. Operational Concerns](./11.11.%20Operational%20Concerns.md) | Versioning, drift detection, eval, multi-developer governance, CI | What changes when more than one person owns the harness |
 | [11.12. Harness Engineering for Private Equity & Venture Capital](./11.12.%20Harness%20Engineering%20for%20Private%20Equity%20%26%20Venture%20Capital.md) | Same primitives re-applied to deal-intelligence agents; identity propagation; audit | Domain transfer |
 | [11.13. Harness Engineering for Stock Investment](./11.13.%20Harness%20Engineering%20for%20Stock%20Investment.md) | Public-equity research and trade-proposal agents; Chinese wall; pre-trade gate; never-in-execution rule | Domain transfer |
+| [11.14. Tuning the Harness, Not the Model](./11.14.%20Tuning%20the%20Harness%2C%20Not%20the%20Model%20%E2%80%94%20The%20Harness%20as%20an%20Optimization%20Surface.md) | The harness as an optimization surface; separating harness vs model failures; the tune-screen-repeat-regress loop; the ~10x cost economics and the capability ceiling | Cross-cutting thesis |
+| [11.15. Self-Evolving Harnesses — Observability-Driven Automatic Evolution](./11.15.%20Self-Evolving%20Harnesses%20%E2%80%94%20Observability-Driven%20Automatic%20Evolution.md) | Automating the 11.14 loop: component/experience/decision observability, the falsifiable-edit contract, and why structural edits transfer while prose edits don't | Cross-cutting thesis |
 
-Read 11.1 → 11.8 in order. 11.9 and 11.10 are reference material. 11.11 is for when the harness becomes a team asset rather than a personal config. 11.12 and 11.13 are the first "domain transfer" notes — same discipline, different corpus.
+Read 11.1 → 11.8 in order. 11.14 and 11.15 are cross-cutting theses — read them after 11.8 and 11.11 (11.15 builds directly on 11.14). 11.9 and 11.10 are reference material. 11.11 is for when the harness becomes a team asset rather than a personal config. 11.12 and 11.13 are the first "domain transfer" notes — same discipline, different corpus.
 
 ## How section 11 relates to section 7
 
