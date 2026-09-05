@@ -1,9 +1,13 @@
 # MCP Goes Stateless — The 2026-07-28 Release Candidate
 
 > **Source:** the official MCP spec changelog (draft → `2026-07-28`), locked
-> 2026-05-21, final publication 2026-07-28. This note covers what the release
-> candidate changes for people who *build* MCP servers, clients, and the
-> gateways in between. For the high-level layer cake (MCP vs A2A vs AGENTS.md)
+> 2026-05-21, **officially released 2026-07-28** — see the
+> [announcement post](https://blog.modelcontextprotocol.io/posts/2026-07-28/).
+> Everything below was already true of the release candidate and carried
+> through to the final spec unchanged; the RC → GA step added no new breaking
+> changes, only confirmation. This note covers what the change means for
+> people who *build* MCP servers, clients, and the gateways in between. For
+> the high-level layer cake (MCP vs A2A vs AGENTS.md)
 > see [The Agent Protocol Stack](./The%20Agent%20Protocol%20Stack%20—%20MCP%2C%20A2A%2C%20AGENTS.md.md);
 > for the harness view see
 > [11.7. Tools and MCP](../11.%20Harness%20Engineering/11.7.%20Tools%20and%20MCP.md).
@@ -192,16 +196,41 @@ provider integration. MCP stops trying to be a model-routing layer.
 | **Client / SDK author** | Put version + identity + capabilities in `_meta` on every request. Drop the handshake. Handle `input_required` results by retrying with `inputResponses`. Re-issue on broken streams (no resumability). Migrate off Sampling/Roots. |
 | **Gateway / infra owner** | You can finally treat MCP like HTTP: round-robin across replicas, route on `Mcp-Method`/`Mcp-Name`, cache list responses by `cacheScope`. Drop sticky sessions and the shared session store. |
 
-The ten-week window (RC locked 2026-05-21 → final 2026-07-28) is for SDK
-maintainers to validate against real workloads; Tier-1 SDKs are expected to ship
-support inside it. If you run MCP in production, the migration is real but
-mechanical — and it removes the two things (sticky routing, session stores) that
-made MCP awkward to scale.
+The ten-week window (RC locked 2026-05-21 → final 2026-07-28) was for SDK
+maintainers to validate against real workloads; all four Tier-1 SDKs
+(TypeScript, Python, Go, C#) shipped migration support alongside the final
+release. If you run MCP in production, the migration is real but mechanical —
+and it removes the two things (sticky routing, session stores) that made MCP
+awkward to scale.
+
+---
+
+## 9. What's next: the roadmap after stateless (2026-08-22)
+
+The stateless core shipped; the follow-up roadmap (published 2026-08-22) names five
+priority areas for the next cycle:
+
+| Area | Direction |
+|---|---|
+| **Agentic messaging primitives** | Server-initiated events (webhooks/channels) to kill polling; the Tasks extension (§5 above) matures toward formal spec inclusion |
+| **HTTP-native transport unification** | Extend Streamable HTTP over stdio for local servers too, so client/server code stops branching on transport |
+| **Agent identity & enterprise security** | DPoP, Workload Identity Federation, Enterprise-Managed Authorization — agents-as-cloud-workloads need first-class identity, not borrowed OAuth flows |
+| **Improved primitives** | Standardize tool-result rendering (today a server has no way to know which form a given client puts in front of the model) and progressive discovery for large tool catalogs |
+| **SDK developer experience** | Conformance testing and doc quality across the Tier-1 SDKs |
+
+> **Architectural takeaway:** the pattern from §1–§8 continues — every roadmap item is
+> "make MCP look more like a boring, ordinary HTTP/cloud workload." Session state,
+> transport, auth, and now agent identity are each converging on existing enterprise
+> infrastructure primitives instead of inventing protocol-specific ones. If you are
+> building a gateway or SDK for MCP, betting on eventual convergence with standard
+> HTTP/OAuth/webhook tooling is the safer long-term bet than optimizing for MCP's
+> current bespoke mechanisms.
 
 ---
 
 ## References
 
+- [The 2026-07-28 Specification (final release announcement)](https://blog.modelcontextprotocol.io/posts/2026-07-28/)
 - [The 2026-07-28 MCP Specification Release Candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/)
 - [MCP Specification — Key Changes (draft changelog)](https://modelcontextprotocol.io/specification/draft/changelog)
 - [Agentic AI Foundation — MCP Is Growing Up](https://aaif.io/blog/mcp-is-growing-up/)
@@ -209,5 +238,4 @@ made MCP awkward to scale.
 - [SEP-2575 — Stateless protocol and server/discover](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2575)
 - [SEP-2322 — Multi Round-Trip Requests](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2322)
 - [SEP-2596 — Feature lifecycle and deprecation policy](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2596)
-</content>
-</invoke>
+- [The New MCP Roadmap (2026-08-22)](https://blog.modelcontextprotocol.io/posts/mcp-roadmap/)

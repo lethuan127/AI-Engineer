@@ -57,8 +57,12 @@ A progression from software engineering foundations to building production-ready
 This repository's own harness lives in [`AGENTS.md`](./AGENTS.md), [`.cursor/`](./.cursor/), and [`.claude/`](./.claude/). It is documented end-to-end in [11.10. Reference Implementation Tour](./11.%20Harness%20Engineering/11.10.%20Reference%20Implementation%20Tour.md).
 
 
+Nexts:
 https://www.fdehub.org/p/skills-you-need-for-ai-fde-roles
-
-
-
 Agent Reinforcement Trainer (Reinforcement Learning) - Reward Engineering
+https://outcomeschool.substack.com/p/what-are-embeddings-agent-skills?utm_source=post-email-title&publication_id=6146038&post_id=209335238&utm_campaign=email-post-title&isFreemail=true&r=409zp&triedRedirect=true&utm_medium=email
+https://x.com/undefinedKi/article/2083549085076701434
+
+Delegating Engineering Work To Cloud-Based Agents: https://x.com/AIatDoorDash/status/2087284229751394705
+
+https://github.com/nashsu/llm_wiki

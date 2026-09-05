@@ -211,6 +211,7 @@ levers live across this curriculum:
 | **Faster per token** | "beat the autoregressive floor" | [Diffusion LLMs for the Agent Loop](Diffusion%20LLMs%20for%20the%20Agent%20Loop%20—%20Parallel%20Decoding%20and%20the%20Speed–Quality%20Pareto.md) |
 | **Hide the latency** | "overlap the waiting" | [Speculative Execution](../5.%20AI%20Agents%20&%20Tool%20Use/Speculative%20Execution%20in%20the%20Agent%20Loop%20—%20Hiding%20Latency%20with%20Predict-and-Verify.md) |
 | **Right-size the model** | "don't pay frontier prices for easy work" | [Small Language Models for Agents](../5.%20AI%20Agents%20&%20Tool%20Use/Small%20Language%20Models%20for%20Agents%20—%20The%20Heterogeneous%20Architecture.md) |
+| **Serve it all efficiently** | "don't waste the GPU underneath any of this" | [Inference Engineering — Serving LLMs at Scale](Inference%20Engineering%20—%20Serving%20LLMs%20at%20Scale.md) |
 
 The composition is the point. A 2026 production agent **trains** a small policy in an RL
 environment, **routes** easy requests to it cheaply, and **spends** test-time compute —

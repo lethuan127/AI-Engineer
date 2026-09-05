@@ -94,11 +94,21 @@ How it works at a glance:
 - Another agent reads the card, sends a **task**, and gets back results or
   status updates. Long tasks can stream progress.
 
-**Governance:** A2A is governed by the **Linux Foundation's Agentic AI
-Foundation** (now at v1.2) and is deployed across 150+ organizations including
-Microsoft, AWS, Salesforce, and ServiceNow. It started at Google but is now
-vendor-neutral, and is explicitly designed to **complement MCP, not replace
-it**: MCP connects an agent to tools; A2A connects an agent to another agent.
+**Governance:** A2A is deployed across 150+ organizations including Microsoft,
+AWS, Salesforce, and ServiceNow. It started at Google, moved to the Linux
+Foundation in June 2025, and on **20 August 2026 became a hosted project of the
+Agentic AI Foundation** — the same body that stewards MCP. AAIF reports growth
+from fewer than 40 members at its December 2025 launch to more than 250,
+including Google, Microsoft, Amazon, Anthropic, OpenAI, Bloomberg, Shopify, and
+Block. It is explicitly designed to **complement MCP, not replace it**: MCP
+connects an agent to tools; A2A connects an agent to another agent.
+
+> Why the move matters more than it sounds: before August 2026 the two halves of
+> the stack sat under different governance, which is the usual precondition for
+> them drifting apart at the edges (identity, delegation, transport). Consolidating
+> them removes the structural reason for divergence — it does not by itself make
+> them interoperate. Watch the A2A roadmap's interoperability specification for
+> whether shared governance actually produces shared primitives.
 
 **When you use it:** federated or cross-org systems — specialized agents owned
 by different teams collaborating without giving up data sovereignty (each side
@@ -146,8 +156,16 @@ Old way:  Agent ──► reads HTML ──► guesses buttons ──► clicks/
 WebMCP:   Agent ──► reads Tool Contract ──► calls publish_review() (stable)
 ```
 
-It is early, but the direction is clear: the open web becomes directly
-callable by agents, the same way MCP made backend tools callable.
+As of late August 2026 this is no longer speculative. OpenAI shipped **Site
+tools** in the ChatGPT desktop browser (2026-08-25), the W3C Web Machine
+Learning Community Group published a Draft Community Group Report (2026-08-26),
+and Chrome has an origin trial running. The API is `document.modelContext
+.registerTool()`, and the credential is the user's already-signed-in session
+rather than a token you provision.
+
+See [WebMCP — The Page as Tool Server, the Session as Credential](./WebMCP%20%E2%80%94%20The%20Page%20as%20Tool%20Server%2C%20the%20Session%20as%20Credential.md)
+for the API surface, the trust-boundary inversion, and the four limits that
+follow structurally from putting the contract in the page.
 
 ---
 
@@ -157,8 +175,8 @@ callable by agents, the same way MCP made backend tools callable.
 |------------|-----------------|--------------------|----------------------------------|
 | AGENTS.md  | human → agent   | the project README | OpenAI convention, widely adopted |
 | MCP        | agent → tools   | USB-C port         | Linux Foundation (since Dec 2025) |
-| A2A        | agent → agent   | phone line         | LF Agentic AI Foundation, v1.2    |
-| WebMCP     | agent → website | callable web page  | open standard, emerging           |
+| A2A        | agent → agent   | phone line         | AAIF hosted project (Aug 2026), v1.2 |
+| WebMCP     | agent → website | callable web page  | W3C CG draft (2026-08-26), one shipped client |
 
 A request flows through all of them in a real system:
 
@@ -182,8 +200,11 @@ A request flows through all of them in a real system:
   team/company/platform lines and data must stay put.
 - **These are open and neutral now.** MCP and A2A both sit under the Linux
   Foundation, so building on them is not a bet on one vendor.
-- **Watch WebMCP.** If your agent works against the public web, a callable-web
-  standard removes the most fragile part of today's browser agents.
+- **WebMCP is now actionable, not just watchable.** If your agent works against
+  the public web, prefer a declared tool over the accessibility tree when one is
+  present. If you *own* an authenticated web app, the refactor it asks for —
+  each user action as a named function with a typed schema — pays off whether or
+  not the standard sticks.
 
 > **Bigger picture:** this stack is *one half* of agent engineering — the
 > *connection* half. The other half is **context engineering** (what the agent
@@ -199,3 +220,7 @@ A request flows through all of them in a real system:
 - [Google Cloud Next 2026: AI agents, A2A protocol (The Next Web)](https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era) — managed MCP servers, production A2A, full-stack agent bet.
 - [AI Agent Frameworks in 2026: SDKs, ACP, trade-offs (Morph)](https://www.morphllm.com/ai-agent-framework) — how frameworks adopt the protocols.
 - [LLM Agent Architectures in 2026 (Future AGI)](https://futureagi.com/blog/llm-agent-architectures-core-components/) — six-layer agent architecture (model, memory, tools, planner, runtime, observability).
+- [Axios — Google-Backed Agentic A2A Protocol Gets a New Home](https://www.axios.com/2026/08/17/a2a-agentic-ai-foundation-open-ai-standards)
+- [Linux Foundation — A2A Protocol Surpasses 150 Organizations in First Year](https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year)
+- [W3C Web Machine Learning Community Group — WebMCP Draft Community Group Report](https://webmachinelearning.github.io/webmcp/)
+- [ChatGPT Docs — Site tools](https://learn.chatgpt.com/docs/webmcp)

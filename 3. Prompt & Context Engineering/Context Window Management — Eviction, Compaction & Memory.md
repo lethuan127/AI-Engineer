@@ -92,6 +92,14 @@ of turns with a summary. It's eviction where the "persist" step is a summary of 
 Compaction is what lets an agent run for hundreds of turns inside a fixed window — the early history
 becomes a paragraph, the recent turns stay verbatim.
 
+> **What compaction provably cannot do.** Compaction commits *before* the future query arrives, which
+> makes it a one-way communication problem rather than a retrieval one. Some workloads — exact set
+> membership, set disjointness ("do any of these dependencies have known CVEs?") — need `Ω(N·m)` bits
+> to answer correctly, i.e. no better than keeping the raw list. Those belong behind a tool or in a
+> file, never in a summary. And a dropped constraint is a dropped constraint: compaction can silently
+> erase in-context safety policy. See
+> [Context Compaction Theory — Selection, Generation, and the Budget Lower Bound](./Context%20Compaction%20Theory%20—%20Selection%2C%20Generation%2C%20and%20the%20Budget%20Lower%20Bound.md).
+
 ## 5. How to do it today (Claude-first)
 
 Two API features combine to *be* page-out, plus compaction:

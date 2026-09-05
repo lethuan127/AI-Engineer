@@ -32,6 +32,12 @@ A software engineer typically develops depth in one or more of the following are
 - **DevOps / Infrastructure** — automating builds, deployments, and managing cloud infrastructure.
 - **Security** — applying secure coding practices and protecting systems against vulnerabilities.
 
+### Cross-Cutting Principles
+
+Principles that are not tied to one layer of the stack, and that recur throughout the AI-engineering tracks:
+
+- [7. Progressive Disclosure — Revealing Complexity Gradually](./7.%20Progressive%20Disclosure%20—%20Revealing%20Complexity%20Gradually.md) — reveal complexity in layers rather than all at once, because the consumer always has bounded working memory. The 1995 UX pattern generalizes: C4's four abstraction levels, the scope hierarchy that makes a codebase readable, simple-things-simple API design, incremental slide reveals, game tutorials, tile pyramids and 3D level-of-detail, and the three-tier load order behind agent skills and MCP metadata. Includes the shape all of them share and the five ways it gets broken. _This is the definitional anchor for a term used across tracks 3, 5, 10, and 11._
+
 ### Impact
 
 Software engineers are the builders behind nearly every digital product and service. Their work directly affects product quality, user satisfaction, system reliability, and the speed at which a business can innovate and adapt to change.

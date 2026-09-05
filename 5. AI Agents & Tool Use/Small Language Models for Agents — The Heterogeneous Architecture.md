@@ -98,7 +98,10 @@ agent system, chosen per step.
   reasoning, ambiguous instructions, or a task no specialist covers.
 - **A router decides.** It classifies each request and sends it to an SLM by
   default, escalating to the LLM when classification confidence is low, the task
-  needs multi-step reasoning, or the SLM refuses / fails its own checks.
+  needs multi-step reasoning, or the SLM refuses / fails its own checks. The
+  router is a whole design problem of its own — signal families, per-request vs
+  per-step placement, session affinity, tuning-free vs learned — unpacked in
+  [Model Routing in the Agent Loop](Model%20Routing%20in%20the%20Agent%20Loop%20—%20Per-Step%20Model%20Selection.md).
 
 This is the "digital factory" metaphor: line workers handle the volume, the
 expert consultant is paged in for the hard call. The same pattern already shows

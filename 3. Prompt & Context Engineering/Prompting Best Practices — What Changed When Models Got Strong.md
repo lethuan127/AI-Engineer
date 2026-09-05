@@ -1,6 +1,6 @@
 # Prompting Best Practices — What Changed When Models Got Strong
 
-> **Updated 2026-06-19.** Prompting in 2023 was a bag of *tricks to coax a weak model*:
+> **Updated 2026-07-27.** Prompting in 2023 was a bag of *tricks to coax a weak model*:
 > "let's think step by step," elaborate role-play, few-shot scaffolds, "I'll tip you
 > $200." Most of those tricks are now **dead or actively harmful**. The 2026 models
 > (Opus 4.8, Fable 5, GPT-5.5, Gemini 3.x) reason internally, follow instructions
@@ -188,7 +188,45 @@ The meta-discipline that makes all of the above stick:
 
 ---
 
-## 9. One-screen checklist
+## 9. Update — the Claude 5 generation makes it official (Jul 2026)
+
+Anthropic's July 2026 guidance for Opus 5 / Sonnet 5 / Fable 5 turns §1–§8 above from
+"emerging best practice" into a measured result, and adds detail worth calling out:
+
+- **The cut was real, not rhetorical.** Anthropic removed **over 80% of Claude Code's
+  system prompt** for Claude 5 models "with no measurable loss on our coding evaluations."
+  The removed content was mostly the 2023–2024-era guardrail layer this note already
+  argues is now redundant: explicit rule lists ("never write multi-paragraph docstrings")
+  collapse into one line of judgment ("match the surrounding code's comment density,
+  naming, and idiom").
+- **Tool examples now cost you exploration space.** New claim, sharper than §4: showing a
+  Claude 5 model *how* to call a tool doesn't just risk overfitting the format — it
+  measurably *constrains the model's exploration space*. The fix moves up a layer: design
+  expressive parameter names and enumerations so correct usage is inferable from the tool
+  schema itself, and skip the example.
+- **`/doctor` (Claude Code) rightsizes your own scaffolding.** A built-in command that
+  audits your `CLAUDE.md`/`AGENTS.md` and skills for exactly the anti-pattern this note
+  warns about — stale rules, redundant nagging, over-specified procedure — and flags what
+  to cut. Practical companion to the "start minimal, add by failure" ratchet in §8.
+- **Memory moved from manual to automatic.** Claude Code no longer relies solely on the
+  user hand-editing `CLAUDE.md`; Claude 5 models now *automatically save memories relevant
+  to the work* as they go. This is the same shift as this note's other "judgment over
+  rules" moves, applied to persistence: don't hand-write every fact to remember, let the
+  model decide what's worth keeping and verify later. See
+  [11.2. Repo Memory](../11.%20Harness%20Engineering/11.2.%20Repo%20Memory%20—%20AGENTS.md%20&%20Friends.md).
+- **Specs can be artifacts, not just markdown.** Anthropic now treats HTML artifacts (and
+  code, tests, or a reference implementation in another codebase) as valid spec formats
+  for Claude to work from — the point is the highest-fidelity representation of "what
+  correct looks like," not necessarily prose.
+
+> **Lesson:** the direction of travel hasn't changed since §1 — it's the same "prescribing
+> the reasoning path hurts, defining the goal helps" principle — but the Claude 5
+> generation pushes it further than expected: even *tool-call examples*, previously
+> considered safe scaffolding, are now a place to remove rather than add.
+
+---
+
+## 10. One-screen checklist
 
 ```text
 SPEC      □ specific output + constraints   □ stated the WHY   □ positive ("do X" not "don't Y")
@@ -204,6 +242,7 @@ DELETE    □ removed "MUST!!!", anti-laziness nags, redundant few-shot, prefill
 
 ## References
 
+- [Anthropic — The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models)
 - [Anthropic — Prompting best practices (current models)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 - [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Anthropic — Use XML tags to structure your prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags)

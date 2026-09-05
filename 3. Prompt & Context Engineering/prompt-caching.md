@@ -8,8 +8,8 @@ Every LLM request is stateless. The API re-reads your whole prompt — system pr
 
 Prompt caching fixes this: the provider stores the computed attention state (key/value tensors) for a prompt prefix and reuses it. Results:
 
-- **Cost:** cached tokens cost ~10% of normal input price (all three providers converge on ~90% off for reads).
-- **Latency:** time-to-first-token drops a lot (OpenAI reports up to 80% faster on long prompts).
+- **Cost:** cached tokens cost ~10% of normal input price. All three providers converged on ~90% off for reads — until Anthropic broke the convergence with Fable 5.1 (2026-09-01), cutting cache reads a further 75% to **$0.25 / MTok against $10 / MTok input, i.e. 2.5%**. See §3 for what that does to the break-even math.
+- **Latency:** time-to-first-token drops a lot (OpenAI reports up to 80% faster on long prompts). Anthropic reports cached reads running ~1.5–2× faster at ~100k tokens, scaling near-linearly with context length.
 
 ## 2. How to make work cacheable (provider-neutral rules)
 
@@ -27,6 +27,23 @@ These rules apply everywhere, because all three providers do prefix matching:
 5. **Mind the minimum size.** Short prompts never cache (OpenAI ≥1024 tokens; Claude 1024–4096 depending on model; Gemini 1024–4096 depending on model). No error is raised — it just silently doesn't cache.
 6. **Verify with the usage fields.** All three report cache hits in the response. If cache reads stay at zero across identical requests, a silent invalidator is at work — diff the rendered bytes of two requests.
 
+### The three-segment layout
+
+Rule 1 is easy to state and hard to hold as a system grows, because "stable" is not binary. The operational version, from Anthropic's 2026 production guidance for consumer agents, is to treat a request as three segments ordered by **rate of change**:
+
+| Segment | Contents | Lifetime |
+|---|---|---|
+| **Global** | Most of the system prompt, tool definitions | Byte-identical across every session. At consumer volume it never expires. Put a breakpoint at its end. |
+| **Session** | Per-user context, long-term memory facts, conversation history | Varies across sessions, stable within one. |
+| **Volatile** | Current time, current page, anything that changes mid-session | Must sit at the very end — a tagged block in the newest user turn, or a mid-conversation `role: "system"` message. |
+
+Two corollaries that are easy to get wrong:
+
+- **Load skills as tool results, not by appending them to the system prompt.** Appending mutates the global segment and invalidates it for every other session; as a tool result the skill body lands in the session prefix and is cached with the conversation.
+- **Roll the newest breakpoint to the end of each user turn.** Breakpoints per request are capped, so this is what makes each round read the whole accumulated history — including long tool results — from cache.
+
+The target to design for on high-volume consumer traffic is a **90–99% hit rate on the default 5-minute TTL**. The most common single defect remains a timestamp at the top of the system prompt.
+
 ## 3. The three strategies, compared
 
 The big design difference is **who controls the cache**:
@@ -37,7 +54,7 @@ The big design difference is **who controls the cache**:
 | You must do | Nothing (optionally `prompt_cache_key`) | Mark up to 4 blocks with `cache_control` | Implicit: nothing. Explicit: create/manage a cache resource with the API |
 | Min tokens | 1,024 | 1,024–4,096 (per model; e.g. Opus 4.8 = 4,096, Sonnet 4.6 = 2,048) | 2,048 (Gemini 2.5) / 4,096 (Gemini 3.x) |
 | Write cost | Free | **1.25×** input price (5-min TTL) or **2×** (1-hour TTL) | Free to write; you pay **storage** for explicit caches (~$1 / 1M tokens / hour) |
-| Read cost | ~10% of input price (90% off) | ~10% of input price | ~10% of input price |
+| Read cost | ~10% of input price (90% off) | ~10% of input price; **2.5% on Fable 5.1** ($0.25 vs $10 / MTok) | ~10% of input price |
 | Lifetime (TTL) | 5–10 min idle, max 1 h (up to 24 h on newer GPT-5.x models) | 5 min default, refreshed on every hit; optional 1 h | Implicit: short, not guaranteed. Explicit: you set TTL (default 1 h, any duration) |
 | Guarantee | Best-effort (routing-dependent) | Deterministic — a breakpoint either hits or writes | Implicit: best-effort. Explicit: guaranteed while the cache lives |
 | Routing control | `prompt_cache_key` to stick requests to the same cache node | Not needed (key is the prefix itself) | Explicit cache referenced by name (`cachedContents/xyz`) |
@@ -66,6 +83,7 @@ print(resp.usage.prompt_tokens_details.cached_tokens)
 You place `cache_control: {"type": "ephemeral"}` on content blocks (max 4 breakpoints per request). Each breakpoint says "cache everything up to here". Render order is `tools → system → messages`, so a breakpoint on the last system block caches tools + system together.
 
 - **Writes cost extra** (1.25× for 5-min TTL, 2× for 1-h TTL), so caching a prefix you reuse only once *loses* money. Break-even: 2 requests (5-min TTL), 3 requests (1-h TTL).
+- **The read price is now model-dependent, and the gap changes what you optimize.** Fable 5.1 (2026-09-01) cut cache reads 75% to $0.25 / MTok — 2.5% of its $10 / MTok input price rather than the usual 10%. Anthropic reports this alone taking ~25% off typical workloads and up to ~45% off "highly agentic" ones, which is the tell: **in a tool-heavy agent loop, cache reads are the dominant cost line, not output tokens.** The design consequence is that hit rate, not context size, is the number to engineer against.
 - The 5-minute TTL refreshes on every cache hit, so steady traffic keeps the cache warm for free.
 - Deterministic: same prefix + breakpoint → guaranteed read. This is why agent harnesses (Claude Code included) are built on it — the multi-turn pattern is "move the breakpoint to the last block of the newest turn; every request reuses the whole prior conversation."
 - You can pre-warm with a `max_tokens: 0` request at startup so the first real user never pays the cold-write latency.
@@ -128,6 +146,9 @@ All three are the same machine underneath (KV-cache reuse over a byte-identical 
 ## References
 
 - [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+- [Anthropic — Introducing Claude Fable 5.1 and Claude Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1)
+- [Anthropic — A Guide to the Anatomy of Effective Commerce Agents](https://claude.com/blog/the-anatomy-of-effective-commerce-agents)
+- [Claude Platform — Mid-Conversation System Messages and Tool Changes](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)
 - [OpenAI — Prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
 - [Google — Gemini context caching](https://ai.google.dev/gemini-api/docs/caching)
 - [Gemini API pricing (cached token + storage rates)](https://ai.google.dev/gemini-api/docs/pricing)

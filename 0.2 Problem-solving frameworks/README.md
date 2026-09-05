@@ -12,10 +12,14 @@ Good decisions are not the same as good outcomes. A good outcome can come from l
 
 The Heath brothers make this point sharply — for important decisions, a good *process* beats raw analysis. Two practical anchors run through everything below:
 
-- **The 70% rule (Bezos):** most decisions should be made with ~70% of the information you wish you had. Waiting for 90% means you are too slow. ([Amazon 2016 shareholder letter, summarized](https://blueprints.guide/posts/one-way-vs-two-way-doors))
+- **The 70% rule (Bezos):** *"Most decisions should probably be made with somewhere around 70% of the information you wish you had. If you wait for 90%, in most cases, you're probably being slow. **Plus, either way, you need to be good at quickly recognizing and correcting bad decisions.** If you're good at course-correcting, being wrong may be less costly than you think, whereas being slow is going to be expensive for sure."* ([Amazon 2016 shareholder letter](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders))
+
+  The bolded sentence is the *precondition*, not a footnote — and it is what popular summaries drop. The 70% rule is a trade: you accept being wrong more often, buy speed with it, and pay for it with the ability to detect and correct fast. Without a detection mechanism (see **tripwires** under WRAP's *Prepare to be wrong*), deciding at 70% just means being wrong faster.
 - **Reversible vs. irreversible (one-way vs. two-way doors):** if a decision is easy to undo (a *two-way door*), decide fast and learn from doing. If it is hard or impossible to undo (a *one-way door*), slow down, consult, and deliberate. Most decisions are two-way doors that we wrongly treat as one-way. ([fs.blog](https://fs.blog/reversible-irreversible-decisions/))
 
 Speed is a feature for reversible decisions and a danger for irreversible ones. Knowing which you are facing is half the battle.
+
+One refinement worth carrying: **a door whose failure signal arrives late is effectively one-way, even when it is technically revertible.** Deleting a strange line of code is `git revert`-able, but if the consequence only surfaces in production three weeks later, nobody will connect cause to effect by then. So the door test is really two questions, not one: *can I undo it?* **and** *how fast would I find out I was wrong?*
     
 ---
 
@@ -33,6 +37,12 @@ Break a problem down to the facts you *know* are true, separate from the assumpt
 3. Rebuild a solution from those fundamentals, ignoring how it is "normally" done.
 
 The classic example is Musk costing a battery pack by its raw materials (nickel, aluminum, carbon) instead of accepting the market price — and finding it could be far cheaper. Use it when you suspect the conventional answer is expensive, slow, or simply assumed. ([fs.blog](https://fs.blog/first-principles/), [Untools](https://untools.co/first-principles/))
+
+**The counterweight — Chesterton's fence.** First principles thinking tears down inherited constraints, which makes it dangerous in exactly the places it feels most exciting. Chesterton's rule (*The Thing*, 1929): you come across a fence in the middle of a field; the hasty reformer says "I see no use for this, clear it away," and the wiser one answers *"if you don't see the use of it, I certainly won't let you clear it away. Go away and think. Then, when you can come back and tell me that you do see the use of it, I may allow you to destroy it."*
+
+These two genuinely conflict, and both are right in their own territory. The resolution is **order, not choice**: the fence question (*why did it come to be this way?*) must be answered before the first-principles question (*does it have to be this way?*). Musk could re-cost a battery because he understood why the market price was what it was. Stripping assumptions you never understood isn't first principles thinking — it's impulsiveness with better vocabulary.
+
+*In practice:* the odd `sleep(200)`, the `if` with a "do not remove" comment, the retry that looks pointless — most are scar tissue from an old incident. `git log -S` and `git blame` are the cheap version of "go away and think." And the honest move is usually not to pick a side but to **turn the one-way door into a two-way one**: add a metric or a flag around the thing first, *then* remove it. ([Chesterton's fence](https://www.chesterton.org/taking-a-fence-down/))
 
 ### 2. Systems Thinking — see the whole, not the part
 
@@ -199,6 +209,7 @@ The artifact that makes all of this stick is the **ADR** — a short, dated mark
 - **Fixing the symptom keeps backfiring; effects are delayed** → Systems thinking.
 - **The problem is too big to attack directly** → Issue tree + MECE.
 - **I'm about to commit and I'm feeling confident** → Inversion + premortem.
+- **I want to tear down a constraint I inherited** → Chesterton's fence *first* (why does it exist?), then first principles.
 - **I'm optimizing one number and ignoring the rest** → Multidimensional thinking (rotate the dimensions).
 - **The situation is fast-moving and I must act and adjust** → OODA loop.
 - **I'm choosing under real uncertainty** → Expected value (probability × impact).
@@ -213,6 +224,7 @@ A framework's job is to slow you down at the few moments that matter and speed y
 
 - Snowden, D. — Cynefin framework: [Untools](https://untools.co/cynefin-framework/), [Wikipedia](https://en.wikipedia.org/wiki/Cynefin_framework), [The Cynefin Co](https://thecynefin.co/effective-decision-making-support-tool/)
 - First principles thinking: [fs.blog](https://fs.blog/first-principles/), [Untools](https://untools.co/first-principles/)
+- Chesterton's fence — G.K. Chesterton, *The Thing* (1929), ch. "The Drift from Domesticity": [full passage](https://www.chesterton.org/taking-a-fence-down/)
 - Systems thinking (Meadows, *Thinking in Systems*): [book summary](https://curatella.com/notes/thinking-in-systems-book-summary/), [stocks/flows/loops](https://www.resextensa.co/p/res-extensa-6-systems-thinking-stocks)
 - Issue trees & MECE (Minto): [Crafting Cases](https://www.craftingcases.com/issue-tree-guide/), [MECE](https://www.mbacrystalball.com/blog/strategy/mece-framework/)
 - Heath, C. & D. — *Decisive* / WRAP: [Shortform summary](https://www.shortform.com/blog/wrap-decision-making/), [Heath Brothers one-pager](https://heathbrothers.com/member-content/1-page-summary-of-the-wrap-model/), [Stanford GSB](https://www.gsb.stanford.edu/faculty-research/books/decisive-how-make-better-choices-life-work)

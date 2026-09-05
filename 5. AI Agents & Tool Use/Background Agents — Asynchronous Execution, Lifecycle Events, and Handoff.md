@@ -10,6 +10,9 @@
 > default execution model for capable agents — the default is fire-and-forget with
 > a callback. This note is about the three primitives that make that safe to
 > operate: **lifecycle events**, **structured handoff**, and **mid-flight steering**.
+> This note makes the work *around* the loop asynchronous; for the same move applied
+> to the loop's interior — a turn that is no longer atomic — see
+> [Breaking the Lockstep Turn](Breaking%20the%20Lockstep%20Turn%20—%20Async%20Tool%20Calls,%20Mid-Turn%20Steering,%20and%20Configuration%20Updates.md).
 > Companion to [Multi-Agent Orchestration in Production](Multi-Agent%20Orchestration%20in%20Production%20—%20Topologies,%20Token%20Economics,%20and%20Coordination%20Failure.md),
 > [Speculative Execution in the Agent Loop](Speculative%20Execution%20in%20the%20Agent%20Loop%20—%20Hiding%20Latency%20with%20Predict-and-Verify.md),
 > and [Durable Execution for Agents](../7.%20AI%20System%20Architecture/7.3.%20Durable%20Execution%20for%20Agents%20—%20Surviving%20Crashes%20Mid-Loop.md).
