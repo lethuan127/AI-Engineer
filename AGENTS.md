@@ -109,3 +109,5 @@ When in doubt, optimize for a future reader who is a senior engineer learning AI
 - **YAGNI-pruned.** Cut anything you cannot defend as load-bearing.
 
 If a note would be better as a section inside an existing note, prefer that. New notes are earned, not free.
+
+## Imported Claude Cowork project instructions

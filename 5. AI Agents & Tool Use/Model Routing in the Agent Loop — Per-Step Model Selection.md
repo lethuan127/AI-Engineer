@@ -9,6 +9,11 @@
 > and what it costs. Treat the vendor framing as one instance of a general design
 > problem: routing is a control-plane decision, and the interesting questions are
 > which signals it reads, when it reads them, and what it does when it is wrong.
+>
+> This note is the *build* side. For the buy side — orchestration trained into a
+> model and sold behind a chat-completions endpoint, which deletes §7's logging
+> contract along with the code — see
+> [Orchestration Below the API Line — When the Router Ships as a Model](Orchestration%20Below%20the%20API%20Line%20—%20When%20the%20Router%20Ships%20as%20a%20Model.md).
 
 ---
 

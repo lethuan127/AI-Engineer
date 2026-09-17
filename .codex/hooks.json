@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/thuanle/Documents100x/lethuan127/AI-Engineer/.codex/hooks/check-references.sh'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

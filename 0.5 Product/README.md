@@ -1,0 +1,1 @@
+https://medium.com/@brynray/product-architecture-an-emerging-practice-e14b9cc67cc8

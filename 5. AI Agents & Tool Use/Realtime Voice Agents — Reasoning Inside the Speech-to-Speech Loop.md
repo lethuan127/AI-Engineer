@@ -1,7 +1,11 @@
 # Realtime Voice Agents — Reasoning Inside the Speech-to-Speech Loop
 
 > **Source:** OpenAI's `gpt-realtime-2.1` / `gpt-realtime-2.1-mini` release
-> (2026-07-06) is the triggering event; the pattern is vendor-neutral. For the
+> (2026-07-06) is the triggering event; the pattern is vendor-neutral.
+> **Updated 2026-09-10** — §7 covers GPT-Live-1, which partly reverses the thesis
+> below: the voice layer stops reasoning and starts *delegating*, and full duplex
+> retires the spoken-preamble pattern as a requirement. Read §1–§6 as the
+> half-duplex design that GPT-Live-1 is a reaction to. For the
 > latency-hiding trick this note's "spoken preamble" resembles, see
 > [Speculative Execution in the Agent Loop](./Speculative%20Execution%20in%20the%20Agent%20Loop%20—%20Hiding%20Latency%20with%20Predict-and-Verify.md);
 > for the reasoning-vs-latency tradeoff on the text side see
@@ -125,23 +129,93 @@ Cached audio input at ~3% of fresh makes **prompt/audio caching the primary cost
 lever** for high-volume voice — the same lesson text agents already learned, now
 load-bearing for phone traffic.
 
-## 7. Architectural takeaway
+## 7. The full-duplex correction — GPT-Live-1 (2026-09-10)
 
-- Reasoning is now a **per-turn dial in the audio loop**, not a separate pipeline
-  stage. Budget it like a scarce resource: `low` by default, escalate only on turns
-  that earn the pause.
-- **Never let a tool call be silent.** A spoken preamble is a required harness
-  pattern for voice, the same way a streaming token is for text.
+Two months later OpenAI shipped `gpt-live-1` in the API, and it moves the
+boundary back. §1–§6 described a model that reasons *inside* the audio loop.
+GPT-Live-1 does the opposite: it is a **front-end voice layer** priced
+separately at **$0.05/minute**, and it *"can delegate reasoning and tool calls
+to a backend text model."* The architecture is no longer one model — it is two,
+split along a seam the previous release had deliberately erased.
+
+The justification for re-splitting is the one thing a unified model still could
+not do: **full duplex**. GPT-Live-1 listens and speaks *simultaneously*,
+reasoning over incoming and outgoing audio together rather than alternating. It
+is explicitly *"not a turn-based model"* while still supporting turn detection
+for applications that want explicit boundaries. Reported gains: **+30 percentage
+points on Full Duplex Bench** over `gpt-realtime-2.1`, and #1 on Tau3 when paired
+with a GPT-6 Astra backend at medium effort.
+
+### 7.1 What full duplex retires
+
+| §4's problem | The half-duplex fix (§4) | Under full duplex |
+|---|---|---|
+| Model goes silent during tool calls | Spoken preamble before every call | Conversation continues *while work happens in the background* — the channel never goes dead |
+| User interrupts and cancels in-flight work | Design turns to front a preamble | Model hears and reasons over the interruption without losing the pending work |
+| Thinking pauses read as "it's broken" | Filler utterance | Reported ~80% fewer interruptions during thinking pauses vs turn-based systems (Speak, early evaluation) |
+
+The spoken preamble drops from **required harness pattern** to **stylistic
+choice**. That is a rare thing to see: a production pattern invalidated by a
+capability change two months after it was worth writing down.
+
+### 7.2 The delegation seam
+
+The backend is a parameter, not a given. The pattern OpenAI describes is
+**routing by turn difficulty** — a cheap model for scheduling and order status,
+a reasoning model for the hard cases — which is
+[Model Routing in the Agent Loop](./Model%20Routing%20in%20the%20Agent%20Loop%20—%20Per-Step%20Model%20Selection.md)
+applied to the voice front-end, with the twist that the router is now the thing
+holding the microphone. The delegation is asynchronous and explicitly addressed:
+
+```json
+{ "type": "session.commentary.append",
+  "delegation_id": "<id of the in-flight delegation>",
+  "content": "<what the backend came back with>" }
+```
+
+A `delegation_id` is the tell. The voice layer tracks multiple outstanding
+delegations while still talking — which makes this the audio-loop analogue of
+the async tool calls in
+[Breaking the Lockstep Turn](./Breaking%20the%20Lockstep%20Turn%20—%20Async%20Tool%20Calls,%20Mid-Turn%20Steering,%20and%20Configuration%20Updates.md),
+with the same unanswered questions about what happens to a delegation that never
+returns.
+
+> **Architectural takeaway:** the July release collapsed the voice/reasoning
+> split to buy latency. The September release re-opens it to buy **duplex**, and
+> pays for the seam with an explicit delegation protocol rather than a chained
+> pipeline. Read the two together and the real axis is not unified-vs-chained —
+> it is *what the fast layer is allowed to do while the slow layer thinks.*
+
+### 7.3 What to re-check in your own build
+
+- **Your latency architecture may be obsolete.** If the design is organized around covering dead air, the covering is now the model's job.
+- **Cost model changes shape.** A per-minute voice layer plus backend tokens is not comparable to the per-token table in §6. Price the two legs separately.
+- **The eval target moves.** Full Duplex Bench and interruption/backchannel behavior measure things turn-based evals cannot see. A voice suite built on turn-level pass rates will score a full-duplex agent blind.
+- **Transcripts stop being a reason to chain.** GPT-Live-1 natively emits ASR transcripts and response text, removing §2's "transcript-as-product" exception.
+- **Vendor-lock check.** The delegation seam is the interesting primitive and it is one vendor's proprietary protocol. Nothing standard sits underneath it yet.
+
+## 8. Architectural takeaway
+
+- Reasoning is a **dial you place**, not a fixed layer: in-loop effort (§3) and
+  delegation to a backend model (§7) are the two positions, and full duplex is
+  what makes the second one pay.
+- **Never let a tool call be silent** — a spoken preamble was a required harness
+  pattern on half-duplex models. On a full-duplex model the channel stays alive
+  by construction; keep the preamble only where it reads as courtesy.
 - Prefer **unified speech-to-speech** over chained STT→LLM→TTS unless you have a
-  hard reason (specific text model, transcript-as-product).
-- **Caching is the cost story.** Cached audio input is an order of magnitude
-  cheaper; design prompts and session state so the reusable part is cacheable.
+  hard reason (specific text model, on-prem constraint). "Delegating to a backend"
+  is not the chained pipeline coming back: the audio never leaves the voice model.
+- **Caching is the cost story** on per-token voice models; on a per-minute voice
+  layer, the lever moves to *how long the call lasts* and *which backend answers
+  which turn*.
 - Voice is no longer a downgraded agent tier — the reasoning, tool-use, and
-  eval discipline from your text harness ports directly; only the latency budget
-  and the silence problem are new.
+  eval discipline from your text harness ports directly; only the latency budget,
+  the silence problem, and now duplex behavior are new.
 
 ## References
 
 - [OpenAI — New Realtime models on the API: gpt-realtime-2.1 and gpt-realtime-2.1-mini](https://community.openai.com/t/new-realtime-models-on-the-api-gpt-realtime-2-1-and-gpt-realtime-2-1-mini/1385896)
 - [OpenAI — Realtime and Audio Guide](https://developers.openai.com/api/docs/guides/realtime)
 - [MarkTechPost — OpenAI Releases GPT-Realtime-2.1 and GPT-Realtime-2.1-mini for Low-Latency Voice Agents](https://www.marktechpost.com/2026/07/06/openai-gpt-realtime-2-1-mini-reasoning-realtime-api/)
+- [OpenAI — Build More Natural Voice Experiences with GPT-Live-1 in the API](https://openai.com/index/introducing-gpt-live-1-in-the-api/)
+- [OpenAI — Getting Started with GPT-Live](https://developers.openai.com/api/docs/guides/live)

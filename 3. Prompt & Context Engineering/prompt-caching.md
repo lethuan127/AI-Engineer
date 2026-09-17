@@ -44,6 +44,40 @@ Two corollaries that are easy to get wrong:
 
 The target to design for on high-volume consumer traffic is a **90–99% hit rate on the default 5-minute TTL**. The most common single defect remains a timestamp at the top of the system prompt.
 
+### Agent-loop invalidators the three-segment layout doesn't cover
+
+The layout above assumes a single linear conversation. An agent loop adds four ways to break a prefix that has nothing to do with where you put the timestamp:
+
+1. **Effort and thinking settings render ahead of your content.** They are part of the cached prefix, so changing either mid-conversation restarts the cache. Claude Opus 5 and Fable 5.1 accept a per-message `output_config.effort` change (an effort-only `role: "system"` message) that leaves the earlier prefix untouched; on every other model, pick a level at session start and hold it.
+2. **A fork inherits the parent's cache only if it is byte-identical.** Subagents and conversation branches share the parent prefix only on the same model, at the same effort, with the same tools. This is the hidden write cost in a fan-out topology.
+3. **A blocking call can outlive the TTL.** The 5-minute TTL counts from the *start* of the request. If the loop blocks on a long tool call or subagent, the parent's cache expires before the result returns, and the next turn pays a write (1.25×, or 2× for a 1-hour cache) instead of a read. Long synchronous sub-calls are a caching decision, not just a latency one.
+4. **Rarely-used tools bloat the prefix you must keep frozen.** Marking them [`defer_loading`](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching) keeps them out of the cached prefix entirely; they are appended inline as tool references only when the model finds them via tool search.
+
+Two corollaries for *when* to change configuration:
+
+- **Re-tune at cache-breaking boundaries.** Compaction already rewrites most of the cache, so a model or effort switch scheduled there costs nothing extra.
+- **Roll the breakpoint automatically.** Claude Platform's automatic caching applies the breakpoint to the last cacheable block, which is what the manual "move the breakpoint each turn" rule was approximating.
+
+### Diagnosing a miss instead of guessing
+
+Until 2026 the only signal for a broken prefix was `cache_read_input_tokens` falling to zero, with no indication of *what* changed. Anthropic's cache-diagnostics beta closes that: pass the previous response's `id` as `diagnostics.previous_message_id` and the API compares request fingerprints (hashes and token counts, never prompt text) and reports the **earliest** divergence point.
+
+| `cache_miss_reason.type` | Usual cause |
+|---|---|
+| `model_changed` | A router, A/B test, or fallback picked a different model mid-conversation |
+| `system_changed` | A timestamp or request ID interpolated into the system prompt |
+| `tools_changed` | Tools added, removed, reordered, or schemas serialized non-deterministically |
+| `messages_changed` | History truncated or edited rather than appended; assistant turns or tool results re-serialized differently on resend |
+| `unavailable` | Often another prompt-affecting parameter (`tool_choice`, `thinking`, `context_management`, `output_config`, `output_format`, or the active beta headers) diverged |
+
+Each `*_changed` type also carries `cache_missed_input_tokens` — a byte-derived estimate of how much prefix was lost, useful as a magnitude, not as a billing number.
+
+> **Why it matters:** read the diagnostic *alongside* usage. `diagnostics` answers "did my request change?"; `cache_read_input_tokens` answers "did the cache hit?". No divergence plus zero reads means your prefix is fine and the entry simply expired — the fix is a shorter gap between turns or a 1-hour TTL, not a prompt rewrite. Conflating the two sends you refactoring a prompt that was never the problem.
+
+The other diagnostic worth wiring in early is a **pre-warm**: a `max_tokens: 0` request with an explicit breakpoint at session start (while the user is still typing) writes the prefix to cache so the first real request reads it warm.
+
+For the configuration search these levers feed into, see [11.23. Cost-Performance Hillclimbing](../11.%20Harness%20Engineering/11.23.%20Cost-Performance%20Hillclimbing%20%E2%80%94%20Searching%20the%20Model%2C%20Effort%2C%20and%20Prompt%20Space.md).
+
 ## 3. The three strategies, compared
 
 The big design difference is **who controls the cache**:
@@ -146,6 +180,10 @@ All three are the same machine underneath (KV-cache reuse over a byte-identical 
 ## References
 
 - [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+- [Claude Platform — Cache Diagnostics](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics)
+- [Claude Platform — Tool Use with Prompt Caching](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching)
+- [Claude Platform — Effort](https://platform.claude.com/docs/en/build-with-claude/effort)
+- [Anthropic — Reducing Cost and Improving Performance with Claude Platform](https://claude.com/blog/reducing-cost-and-improving-performance-with-claude-platform)
 - [Anthropic — Introducing Claude Fable 5.1 and Claude Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1)
 - [Anthropic — A Guide to the Anatomy of Effective Commerce Agents](https://claude.com/blog/the-anatomy-of-effective-commerce-agents)
 - [Claude Platform — Mid-Conversation System Messages and Tool Changes](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)
